@@ -72,7 +72,7 @@ class InterProcessCourier(ConanFile):
         dst = self.package_folder
         src = self.build_folder
 
-        copy(self, pattern="*.hpp", dst=os.path.join(dst, "include/InterProcessCourier"),
+        copy(self, pattern="*.hpp", dst=os.path.join(dst, "include"),
              src=os.path.join(src, "include"))
         copy(self, pattern="*.a", dst=os.path.join(dst, "lib"), src=src)
         copy(self, pattern="*.dylib", dst=os.path.join(dst, "lib"), src=src)
