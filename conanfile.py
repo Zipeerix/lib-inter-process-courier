@@ -8,7 +8,6 @@ from conan import ConanFile
 
 class InterProcessCourier(ConanFile):
     name = "lib-inter-process-courier"
-    version = "0.1.0"
     settings = "os", "compiler", "build_type", "arch"
     generators = "CMakeDeps"
     exports_sources = "CMakeLists.txt", "src/*", "include/*"

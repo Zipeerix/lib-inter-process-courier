@@ -57,11 +57,13 @@ but can also be used for general IPC scenarios.
 2. Build and create the package using Conan:
 
    ```bash
-   conan create .
+   conan create . --version=<version>
    ```
 
    > 🔧 You can specify a profile and additional Conan options as needed. See [Conan Docs](https://docs.conan.io/2/) for
    more.
+
+For version argument, use ```indev``` or last release's version.
 
 3. To use in other Conan-based projects, simply add:
 
@@ -102,9 +104,11 @@ If you're not using Conan to manage your dependencies, you can still integrate I
 1. Running:
 
    ```bash
-   conan build .
+   conan build . --version=<verion>
    ./create_zip_package.sh
    ```
+
+Just like before, use ```indev``` or last release's version.
 
 2. This will generate a `.zip` archive with:
     - Compiled library
