@@ -99,18 +99,23 @@ endif ()
 if (SKIP_DOCS)
     message("Skipping documentation generation")
 else ()
-    find_package(Doxygen REQUIRED)
-    set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in)
-    set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
-    configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
-    add_custom_target(
-            docs ALL
-            COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
-            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-            COMMENT "Generating API documentation with Doxygen"
-            VERBATIM
-            DEPENDS ${DOXYGEN_OUT}  # Add this line
-    )
+    find_package(Doxygen QUIET)
 
-    add_dependencies(InterProcessCourier docs)
+    if (DOXYGEN_FOUND)
+        set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in)
+        set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+        configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
+        add_custom_target(
+                docs ALL
+                COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
+                WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+                COMMENT "Generating API documentation with Doxygen"
+                VERBATIM
+                DEPENDS ${DOXYGEN_OUT}
+        )
+
+        add_dependencies(InterProcessCourier docs)
+    else()
+        message(WARNING "Doxygen not found. Documentation will not be generated.")
+    endif ()
 endif ()
