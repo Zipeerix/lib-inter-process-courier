@@ -23,7 +23,7 @@ class InterProcessCourier(ConanFile):
         "skip_static_analysis": False,
         "skip_compiler_flags": False,
         "skip_tests": False,
-        "skip_docs": False,
+        "skip_docs": True,
         "shared": False,
         "fPIC": True
     }
@@ -33,10 +33,13 @@ class InterProcessCourier(ConanFile):
             del self.options.fPIC
 
     def build_requirements(self):
-        self.tool_requires("doxygen/<host_version>")
+        if not self.options.skip_docs:
+            self.tool_requires("doxygen/<host_version>")
 
     def requirements(self):
-        self.requires("doxygen/1.14.0")
+        if not self.options.skip_docs:
+            self.requires("doxygen/1.14.0")
+
         self.requires("gtest/1.16.0")
         self.requires("boost/1.86.0")
 
