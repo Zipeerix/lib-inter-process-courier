@@ -34,15 +34,15 @@ if [ ! -d "$INCLUDE_SOURCE" ]; then
     exit 1
 fi
 
-if [ ! -d "DOCS_SOURCE" ]; then
-    echo "Error: Docs directory not found at DOCS_SOURCE"
+if [ ! -d "$DOCS_SOURCE" ]; then
+    echo "Error: Docs directory not found at $DOCS_SOURCE"
     rm -rf "$TEMP_DIR"
     exit 1
 fi
 
 cp "$BINARY_SOURCE" "$PACKAGE_DIR/lib/"
 cp -r "$INCLUDE_SOURCE"/* "$PACKAGE_DIR/include/"
-cp -r "DOCS_SOURCE"/* "$PACKAGE_DIR/docs/"
+cp -r "$DOCS_SOURCE"/* "$PACKAGE_DIR/docs/"
 
 CURRENT_DIR=$(pwd)
 cd "$PACKAGE_DIR"

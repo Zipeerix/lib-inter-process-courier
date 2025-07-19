@@ -62,7 +62,7 @@ pipeline {
                 }
             }
         }
-        stage("Build application") {
+        stage("Build library") {
             steps {
                 script {
                     def extra_params = params.UPDATE_RECIPES ? "--update" : ""
@@ -89,7 +89,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh "./conan/build/application_build/InterProcessCourier_Tests"
+                    sh "./InterProcessCourier_Tests"
                 }
             }
         }

@@ -123,7 +123,7 @@ You can then link it manually in your project.
 
 Documentation is auto-generated with every build (unless `skip_docs=True` is set).
 
-👉 [Browse the Docs](https://zipeerix.github.io/lib-inter-process-courier/docs/html/index.html)
+👉 [Browse the Docs](https://zipeerix.github.io/lib-inter-process-courier/html)
 
 ---
 
