@@ -15,9 +15,9 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "gtest/gtest.h"
+#include <InterProcessCourier/Version.hpp>
+#include <gtest/gtest.h>
 
-int main(int argc, char** argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+TEST(Version, ReturnsCorrectVersion) {
+    EXPECT_EQ(ipcourier::getLibraryVersion(), INTER_PROCESS_COURIER_LIB_VERSION);
 }

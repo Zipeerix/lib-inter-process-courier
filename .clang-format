@@ -100,3 +100,4 @@ IntegerLiteralSeparator:
   Decimal: 3
   Hex: -1
 QualifierAlignment: Left
+InsertNewlineAtEOF: True

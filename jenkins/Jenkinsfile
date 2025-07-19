@@ -66,7 +66,7 @@ pipeline {
             steps {
                 script {
                     def extra_params = params.UPDATE_RECIPES ? "--update" : ""
-                    sh """conan build conan \
+                    sh """conan build . \
                     --version ${genApplicationVersion()} \
                     ${extra_params} \
                     --build=missing \
@@ -96,7 +96,7 @@ pipeline {
         stage('Pack & stash artifacts') {
             steps {
                 script {
-                    sh "./scripts/create_zip_package.sh ${genApplicationVersion()}"
+                    sh "./create_zip_package.sh ${genApplicationVersion()}"
                     archiveArtifacts artifacts: "InterProcessCourier_${genApplicationVersion()}.zip", fingerprint: true
                 }
             }

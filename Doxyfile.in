@@ -1,0 +1,64 @@
+# Doxyfile for InterProcessCourier Project
+
+# Project-related settings
+PROJECT_NAME           = "InterProcessCourier"
+PROJECT_BRIEF          = "Documentation for the InterProcessCourier library."
+PROJECT_LOGO           =
+PROJECT_NUMBER         = @INTER_PROCESS_COURIER_LIB_VERSION@
+
+# Output settings
+OUTPUT_DIRECTORY       = docs
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+GENERATE_MAN           = NO
+GENERATE_RTF           = NO
+GENERATE_XML           = NO
+HTML_OUTPUT            = html
+
+# Input settings
+INPUT                  = include/InterProcessCourier
+FILE_PATTERNS          = *.h *.hpp
+EXCLUDE_PATTERNS       = *.cpp
+RECURSIVE              = YES
+EXCLUDE_SYMBOLS        =
+
+# Source Browse settings
+SOURCE_BROWSER         = YES
+INLINE_SOURCES         = NO
+STRIP_CODE_COMMENTS    = YES
+REFERENCED_BY_RELATION = YES
+REFERENCES_RELATION    = YES
+
+# Preprocessor settings
+ENABLE_PREPROCESSING   = YES
+MACRO_EXPANSION        = NO
+EXPAND_ONLY_PREDEF     = NO
+SKIP_FUNCTION_MACROS   = YES
+
+# Doxygen-awesome theme settings
+# We keep the stylesheet paths to apply the CSS styling
+HTML_EXTRA_STYLESHEET  = doxygen-awesome-css/doxygen-awesome.css
+HTML_EXTRA_FILES       = doxygen-awesome-css/doxygen-awesome-sidebar-only-darkmode.css \
+                         doxygen-awesome-css/doxygen-awesome-sidebar-only.css \
+                         doxygen-awesome-css/doxygen-awesome-paragraph-link.css \
+                         doxygen-awesome-css/doxygen-awesome-interactive-toc.css \
+                         doxygen-awesome-css/doxygen-awesome-fragment-copybutton.css
+
+# C/C++ settings
+OPTIMIZE_OUTPUT_FOR_C  = YES
+EXTRACT_ALL            = YES
+EXTRACT_STATIC         = YES
+EXTRACT_LOCAL_CLASSES  = YES
+EXTRACT_LOCAL_METHODS  = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_PRIV_VIRTUAL   = YES
+EXTRACT_PACKAGE        = YES
+HIDE_UNDOC_MEMBERS     = NO
+HIDE_UNDOC_CLASSES     = NO
+CASE_SENSE_NAMES       = YES
+SHORT_NAMES            = NO
+JAVADOC_AUTOBRIEF      = YES
+QT_AUTOBRIEF           = NO
+MULTILINE_CPP_IS_BRIEF = NO
+INHERIT_DOCS           = YES
+SEPARATE_MEMBER_PAGES  = NO
