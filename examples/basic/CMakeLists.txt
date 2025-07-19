@@ -24,4 +24,5 @@ project(InterProcessCourier_Example_Basic LANGUAGES CXX)
 find_package(lib-inter-process-courier REQUIRED)
 
 add_executable(InterProcessCourier_Example_Basic src/main.cpp)
-target_link_libraries(InterProcessCourier_Example_Basic PRIVATE lib-inter-process-courier::lib-inter-process-courier)
+target_link_libraries(InterProcessCourier_Example_Basic
+                      PRIVATE lib-inter-process-courier::lib-inter-process-courier)
