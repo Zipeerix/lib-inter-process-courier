@@ -1,0 +1,38 @@
+---
+Checks: "-*,
+        bugprone-*,
+        clang-analyzer-*,
+        modernize-*,
+        cppcoreguidelines-*,
+        readability-*,
+        misc-*,
+        performance-*,
+        -modernize-use-trailing-return-type,
+        -bugprone-easily-swappable-parameters,
+        -readability-identifier-length,
+        -misc-include-cleaner,
+        -cppcoreguidelines-special-member-functions,
+        -modernize-use-nodiscard,
+        -readability-suspicious-call-argument,
+        -performance-enum-size,
+        -misc-header-include-cycle,
+        -cppcoreguidelines-owning-memory,
+        -cppcoreguidelines-avoid-magic-numbers,
+        -readability-magic-numbers,
+        -cppcoreguidelines-prefer-member-initializer,
+        -cppcoreguidelines-pro-type-reinterpret-cast
+"
+
+WarningsAsErrors: '*'
+HeaderFilterRegex: '^(?!.*(moc_|ui_|qrc_|autogen)).*'
+FormatStyle: file
+
+CheckOptions:
+  - key: cppcoreguidelines-special-member-function.AllowMissingMoveFunctions
+    value: 'true'
+  - key: cppcoreguidelines-special-member-function.AllowImplicitlyDeletedCopyOrMove
+    value: 'true'
+  - key: cppcoreguidelines-special-member-function.AllowSoleDefaultDtor
+    value: 'true'
+  - key: misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
+    value: 'true'

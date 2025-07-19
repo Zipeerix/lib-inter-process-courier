@@ -1,0 +1,102 @@
+---
+Language: Cpp
+AccessModifierOffset: -4
+AlignAfterOpenBracket: Align
+AlignEscapedNewlines: Left
+AlignOperands: true
+AlignTrailingComments: true
+AlignArrayOfStructures: None
+AlignConsecutiveAssignments: false
+AlignConsecutiveMacros: false
+AlignConsecutiveDeclarations: false
+AlignConsecutiveBitFields: false
+AllowAllParametersOfDeclarationOnNextLine: false
+AllowShortBlocksOnASingleLine: Empty
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+AlwaysBreakBeforeMultilineStrings: true
+AllowShortCaseExpressionOnASingleLine: true
+AllowShortEnumsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: None
+AllowShortLambdasOnASingleLine: All
+BreakAfterReturnType: Automatic
+BreakConstructorInitializers: AfterColon
+BreakInheritanceList: AfterComma
+BreakTemplateDeclarations: Yes
+BinPackArguments: false
+BinPackParameters: OnePerLine
+BreakBeforeBinaryOperators: None
+BreakBeforeBraces: Attach
+BreakBeforeTernaryOperators: true
+BreakConstructorInitializersBeforeComma: false
+ColumnLimit: 120
+CommentPragmas: '^ IWYU pragma:'
+ConstructorInitializerIndentWidth: 4
+ContinuationIndentWidth: 4
+Cpp11BracedListStyle: true
+DerivePointerAlignment: false
+DisableFormat: false
+ExperimentalAutoDetectBinPacking: false
+EmptyLineBeforeAccessModifier: Always
+EmptyLineAfterAccessModifier: Never
+ForEachMacros: [ foreach, Q_FOREACH, BOOST_FOREACH ]
+IndentWidth: 4
+IndentWrappedFunctionNames: false
+IndentAccessModifiers: false
+IndentCaseLabels: true
+KeepEmptyLinesAtTheStartOfBlocks: false
+MacroBlockBegin: '^IPC_END_MESSAGE_MAP$'
+MacroBlockEnd: ''
+MaxEmptyLinesToKeep: 1
+NamespaceIndentation: None
+ObjCBlockIndentWidth: 2
+ObjCSpaceAfterProperty: false
+ObjCSpaceBeforeProtocolList: false
+PenaltyBreakBeforeFirstCallParameter: 1
+PenaltyBreakComment: 300
+PenaltyBreakFirstLessLess: 120
+PenaltyBreakString: 1000
+PenaltyExcessCharacter: 1000000
+PenaltyReturnTypeOnItsOwnLine: 200
+PackConstructorInitializers: Never
+PointerAlignment: Left
+SpaceAfterCStyleCast: false
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeParens: ControlStatements
+SpaceInEmptyParentheses: false
+SpacesBeforeTrailingComments: 2
+SpacesInAngles: false
+SpacesInContainerLiterals: true
+SpacesInCStyleCastParentheses: false
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
+SeparateDefinitionBlocks: Always
+Standard: Auto
+TabWidth: 8
+UseTab: Never
+FixNamespaceComments: true
+InsertBraces: true
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Regex: '^"[[:alnum:]_]+\.(h|hpp)"$'
+    Priority: 1
+    SortPriority: 0
+  - Regex: '^<[[:alnum:]_]+>$'
+    Priority: 2
+    SortPriority: 0
+  - Regex: '^<.*\.(h|hpp)>$'
+    Priority: 3
+    SortPriority: 0
+  - Regex: '^<.*/.+>$'
+    Priority: 3
+    SortPriority: 0
+  - Regex: '^".*\.(h|hpp)"$'
+    Priority: 4
+    SortPriority: 0
+InsertTrailingCommas: None
+IntegerLiteralSeparator:
+  Binary: 0
+  Decimal: 3
+  Hex: -1
+QualifierAlignment: Left
