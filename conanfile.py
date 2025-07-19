@@ -1,9 +1,8 @@
 import os
 
+from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain
 from conan.tools.files import copy, collect_libs
-
-from conan import ConanFile
 
 
 class InterProcessCourier(ConanFile):
@@ -37,15 +36,22 @@ class InterProcessCourier(ConanFile):
 
     def generate(self):
         tc = CMakeToolchain(self)
-        if self.options.skip_static_analysis:
-            tc.variables["SKIP_STATIC_ANALYSIS"] = "ON"
-        if self.options.skip_compiler_flags:
-            tc.variables["SKIP_COMPILER_FLAGS"] = "ON"
-        if self.options.skip_tests:
-            tc.variables["SKIP_TESTS"] = "ON"
+        tc.cache_variables["SKIP_STATIC_ANALYSIS"] = self.options.skip_static_analysis
+        tc.cache_variables["SKIP_COMPILER_FLAGS"] = self.options.skip_compiler_flags
+        tc.cache_variables["SKIP_TESTS"] = self.options.skip_tests
+        tc.cache_variables["INTER_PROCESS_COURIER_LIB_VERSION"] = self.version
         tc.generate()
 
     def build(self):
+        print("******* InterProcessCourier build *******")
+        print(f"- Version: {self.version}")
+        print(f"- Skipping static analysis: {self.options.skip_static_analysis}")
+        print(f"- Skipping compiler flags: {self.options.skip_compiler_flags}")
+        print(f"- Skipping tests: {self.options.skip_tests}")
+        print(f"- Shared library: {self.options.shared}")
+        print(f"- fPIC: {self.options.fPIC}")
+        print("*****************************************")
+
         cmake = CMake(self)
         cmake.configure()
         cmake.build()

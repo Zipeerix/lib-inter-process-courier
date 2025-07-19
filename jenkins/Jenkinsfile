@@ -1,0 +1,105 @@
+def getPythonCompliantBooleanString(value) {
+    return String.valueOf(value).capitalize()
+}
+def genApplicationVersion(branchName = null) {
+    def branch = branchName ?: env.BRANCH_NAME ?: env.GIT_BRANCH
+
+    if (branch?.startsWith('origin/')) {
+        branch = branch.substring(7)
+    }
+
+    def matcher = branch =~ /^release\/(.+)$/
+    if (matcher.matches()) {
+        return matcher[0][1]
+    }
+
+    return "indev"
+}
+pipeline {
+    agent {
+        dockerfile {
+            filename 'jenkins/Dockerfile'
+            args '-v conan_cache:/var/lib/jenkins/.conan2 -v /etc/passwd:/etc/passwd'
+        }
+    }
+    options {
+        buildDiscarder(logRotator(daysToKeepStr: '30', numToKeepStr: '10'))
+        timeout(time: 10, unit: 'HOURS')
+    }
+    parameters {
+        choice(name: 'BUILD_TYPE', choices: ['Release', 'Debug'], description: "Whether to build application with debug symbols and optimization or not")
+        booleanParam(name: 'REMOVE_CONAN_CACHE', defaultValue: false, description: "Remove conan package cache before building")
+        booleanParam(name: 'UPDATE_RECIPES', defaultValue: false, description: "Add flag --update to update recipes")
+        booleanParam(name: 'SKIP_COMPILER_FLAGS', defaultValue: true , description: "Skip adding warning compiler flags")
+        booleanParam(name: 'SKIP_STATIC_ANALYSIS', defaultValue: true, description: "Skip clang-tidy analysis during build")
+        booleanParam(name: 'SKIP_TESTS', defaultValue: false, description: "Skip building & running tests")
+    }
+    stages {
+        stage('Initialize submodules') {
+            steps {
+                script {
+                    withCredentials([GitUsernamePassword(credentialsId: 'github-cred', gitToolName: 'Default')]) {
+                        sh 'git submodule update --init --recursive'
+                    }
+                }
+            }
+        }
+        stage('Pre-pipeline operations') {
+            steps {
+                script {
+                    if (params.REMOVE_CONAN_CACHE) {
+                        sh "rm -rf /var/lib/jenkins/.conan2/p"
+                    }
+                }
+            }
+        }
+        stage('Prepare') {
+            steps {
+                script {
+                    sh 'conan --version'
+                    sh 'conan remote list'
+                    sh 'cp conan/profiles/* ${CONAN_HOME}/profiles'
+                }
+            }
+        }
+        stage("Build application") {
+            steps {
+                script {
+                    def extra_params = params.UPDATE_RECIPES ? "--update" : ""
+                    sh """conan build conan \
+                    --version ${genApplicationVersion()} \
+                    ${extra_params} \
+                    --build=missing \
+                    --profile:a default \
+                    --profile:a system_gcc14.2 \
+                    --profile:a cpp23 \
+                    -s build_type=${params.BUILD_TYPE} \
+                    -o lib-inter-process-courier/*:skip_compiler_flags=${getPythonCompliantBooleanString(params.SKIP_COMPILER_FLAGS)} \
+                    -o lib-inter-process-courier/*:skip_static_analysis=${getPythonCompliantBooleanString(params.SKIP_STATIC_ANALYSIS)} \
+                    -o lib-inter-process-courier/*:skip_tests=${getPythonCompliantBooleanString(params.SKIP_TESTS)}
+                    """
+                }
+            }
+        }
+        stage("Run tests") {
+            when {
+                expression {
+                    return !params.SKIP_TESTS
+                }
+            }
+            steps {
+                script {
+                    sh "./conan/build/application_build/InterProcessCourier_Tests"
+                }
+            }
+        }
+        stage('Pack & stash artifacts') {
+            steps {
+                script {
+                    sh "./scripts/create_zip_package.sh ${genApplicationVersion()}"
+                    archiveArtifacts artifacts: "InterProcessCourier_${genApplicationVersion()}.zip", fingerprint: true
+                }
+            }
+        }
+    }
+}
