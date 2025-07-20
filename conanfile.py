@@ -10,7 +10,7 @@ class InterProcessCourier(ConanFile):
     name = "lib-inter-process-courier"
     settings = "os", "compiler", "build_type", "arch"
     generators = "CMakeDeps"
-    exports_sources = "CMakeLists.txt", "src/*", "include/*", "test/*", "Doxyfile.in"
+    exports_sources = "CMakeLists.txt", "src/*", "include/*", "test/*", "proto/InternalRequests.proto", "Doxyfile.in"
     options = {
         "skip_static_analysis": [True, False],
         "skip_compiler_flags": [True, False],

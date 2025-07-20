@@ -20,7 +20,7 @@
 
 #include <string>
 #include <type_traits>
-
+#include <format>
 
 /**
  * @file Error.hpp
@@ -89,5 +89,21 @@ struct Error {
     }
 };
 } // namespace ipcourier
+
+template <ipcourier::IsEnum ErrorType>
+struct std::formatter<ipcourier::Error<ErrorType> > {
+    static constexpr auto parse(std::format_parse_context& ctx) {
+        return ctx.begin();
+    }
+
+    auto format(const ipcourier::Error<ErrorType>& error, std::format_context& ctx) const {
+        const auto error_type_name = std::format("{}", error.type);
+        if (error.message.empty()) {
+            return std::format_to(ctx.out(), "Error: Type {}", error_type_name);
+        }
+
+        return std::format_to(ctx.out(), "Error: Type {}, Message: \"{}\"", error_type_name, error.message);
+    }
+};
 
 #endif // INTER_PROCESS_COURIER_ERROR_HPP

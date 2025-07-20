@@ -143,14 +143,20 @@ Enumerations</h2></td></tr>
 <tr class="memitem:a0a05f974238733a0a1a4826800c7d3de" id="r_a0a05f974238733a0a1a4826800c7d3de"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0a05f974238733a0a1a4826800c7d3de">SyncClientError</a> { <br />
 &#160;&#160;<a class="el" href="#a0a05f974238733a0a1a4826800c7d3deabfaef30f1c8011c5cefa38ae470fb7aa">UnknownError</a>
 , <a class="el" href="#a0a05f974238733a0a1a4826800c7d3dea61ade98e7c5d6d1a4b06739496c8de56">BadRequestToResponsePair</a>
+, <a class="el" href="#a0a05f974238733a0a1a4826800c7d3dea1e5bbb5bef0afd592ff8f2fbe7091380">UnableToReflectMappings</a>
 , <a class="el" href="#a0a05f974238733a0a1a4826800c7d3dea2cfb2f18e5085ad2cd38c546253b6a97">UnableToConnectToServer</a>
-, <a class="el" href="#a0a05f974238733a0a1a4826800c7d3dea22f873d11b9699c4e8a89a1558f0929f">UnableToSendMessage</a>
 , <br />
-&#160;&#160;<a class="el" href="#a0a05f974238733a0a1a4826800c7d3dea4fac2be323a198976313b9f8d129c344">UnableToReceiveMessage</a>
+&#160;&#160;<a class="el" href="#a0a05f974238733a0a1a4826800c7d3dea22f873d11b9699c4e8a89a1558f0929f">UnableToSendMessage</a>
+, <a class="el" href="#a0a05f974238733a0a1a4826800c7d3dea4fac2be323a198976313b9f8d129c344">UnableToReceiveMessage</a>
 , <a class="el" href="#a0a05f974238733a0a1a4826800c7d3dea0ebbd6193b9f318fa97a693c03a8a1ae">UnableToParseReturnedProto</a>
 <br />
  }</td></tr>
 <tr class="memdesc:a0a05f974238733a0a1a4826800c7d3de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enumeration of specific error codes for the synchronous client.  <a href="#a0a05f974238733a0a1a4826800c7d3de">More...</a><br /></td></tr>
+<tr class="memitem:a8606c1db6c1243a07ed017baeb0c85fd" id="r_a8606c1db6c1243a07ed017baeb0c85fd"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8606c1db6c1243a07ed017baeb0c85fd">ValidateRequestResponsePairStrategy</a> { <a class="el" href="#a8606c1db6c1243a07ed017baeb0c85fdad4cd02c0a5c55938454a86ada22269cf">NoValidation</a>
+, <a class="el" href="#a8606c1db6c1243a07ed017baeb0c85fda090c85f5b96897d861273592b31a12d9">ManualRegistration</a>
+, <a class="el" href="#a8606c1db6c1243a07ed017baeb0c85fdab1f4097596ba8d92abf3dd9821209402">ServerReflection</a>
+ }</td></tr>
+<tr class="memdesc:a8606c1db6c1243a07ed017baeb0c85fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines strategies for validating the consistency of request and response Protocol Buffer message pairs.  <a href="#a8606c1db6c1243a07ed017baeb0c85fd">More...</a><br /></td></tr>
 <tr class="memitem:a887d75cb647a50bc2e18847c2732c6e7" id="r_a887d75cb647a50bc2e18847c2732c6e7"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a887d75cb647a50bc2e18847c2732c6e7">SyncServerError</a> { <br />
 &#160;&#160;<a class="el" href="#a887d75cb647a50bc2e18847c2732c6e7abfaef30f1c8011c5cefa38ae470fb7aa">UnknownError</a>
 , <a class="el" href="#a887d75cb647a50bc2e18847c2732c6e7ab0622b12b7db3c300525b94a8977ff79">HandlerNotRegistered</a>
@@ -172,6 +178,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a6427e52a0951a9315a0e92ae778b3bac" id="r_a6427e52a0951a9315a0e92ae778b3bac"><td class="memTemplParams" colspan="2">template&lt;IsDerivedFromProtoMessage ProtoType&gt; </td></tr>
 <tr class="memitem:a6427e52a0951a9315a0e92ae778b3bac template"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a0c76265d3f1060a08c57b7b0a870f2f7">ProtobufToolResult</a>&lt; ProtoType &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6427e52a0951a9315a0e92ae778b3bac">makeProtoFromPayload</a> (const <a class="el" href="#a1189cec51d2fdcc0099e09d0f3e203f2">SerializedProtoPayload</a> &amp;payload)</td></tr>
 <tr class="memdesc:a6427e52a0951a9315a0e92ae778b3bac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deserializes a payload string back into a Protocol Buffer message.  <br /></td></tr>
+<tr class="memitem:a271e6bf9a2fb34c2cc0978614b932efa" id="r_a271e6bf9a2fb34c2cc0978614b932efa"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a271e6bf9a2fb34c2cc0978614b932efa">convertValidateRequestResponsePairStrategyToString</a> (<a class="el" href="#a8606c1db6c1243a07ed017baeb0c85fd">ValidateRequestResponsePairStrategy</a> strategy)</td></tr>
+<tr class="memdesc:a271e6bf9a2fb34c2cc0978614b932efa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a <span class="tt"><a class="el" href="#a8606c1db6c1243a07ed017baeb0c85fd" title="Defines strategies for validating the consistency of request and response Protocol Buffer message pai...">ValidateRequestResponsePairStrategy</a></span> enum value to its string representation.  <br /></td></tr>
+<tr class="memitem:aaa3c04c3a3fc6ccb63b30cac4bbb4df9" id="r_aaa3c04c3a3fc6ccb63b30cac4bbb4df9"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaa3c04c3a3fc6ccb63b30cac4bbb4df9">convertSyncServerErrorToString</a> (<a class="el" href="#a887d75cb647a50bc2e18847c2732c6e7">SyncServerError</a> error_type)</td></tr>
+<tr class="memdesc:aaa3c04c3a3fc6ccb63b30cac4bbb4df9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a <a class="el" href="#a887d75cb647a50bc2e18847c2732c6e7" title="Enumeration of specific error codes for the synchronous server.">SyncServerError</a> enum value to its string representation.  <br /></td></tr>
 <tr class="memitem:aa932a924c0c3eea2fd9dab998cabd55d" id="r_aa932a924c0c3eea2fd9dab998cabd55d"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa932a924c0c3eea2fd9dab998cabd55d">getLibraryVersion</a> ()</td></tr>
 <tr class="memdesc:aa932a924c0c3eea2fd9dab998cabd55d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the version string of the InterProcessCourier library.  <br /></td></tr>
 </table>
@@ -282,7 +292,7 @@ template&lt;typename SuccessType&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="SyncClient_8hpp_source.html#l00056">56</a> of file <a class="el" href="SyncClient_8hpp_source.html">SyncClient.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SyncClient_8hpp_source.html#l00057">57</a> of file <a class="el" href="SyncClient_8hpp_source.html">SyncClient.hpp</a>.</p>
 
 </div>
 </div>
@@ -309,7 +319,7 @@ template&lt;typename SuccessType&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="SyncServer_8hpp_source.html#l00057">57</a> of file <a class="el" href="SyncServer_8hpp_source.html">SyncServer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SyncServer_8hpp_source.html#l00067">67</a> of file <a class="el" href="SyncServer_8hpp_source.html">SyncServer.hpp</a>.</p>
 
 </div>
 </div>
@@ -374,6 +384,8 @@ template&lt;typename SuccessType&gt; </div>
 </td></tr>
 <tr><td class="fieldname"><a id="a0a05f974238733a0a1a4826800c7d3dea61ade98e7c5d6d1a4b06739496c8de56" name="a0a05f974238733a0a1a4826800c7d3dea61ade98e7c5d6d1a4b06739496c8de56"></a>BadRequestToResponsePair&#160;</td><td class="fielddoc"><p>The requested Protocol Buffer type pair (request/response) is not registered. </p>
 </td></tr>
+<tr><td class="fieldname"><a id="a0a05f974238733a0a1a4826800c7d3dea1e5bbb5bef0afd592ff8f2fbe7091380" name="a0a05f974238733a0a1a4826800c7d3dea1e5bbb5bef0afd592ff8f2fbe7091380"></a>UnableToReflectMappings&#160;</td><td class="fielddoc"><p>The client failed to reflect the request-response mappings from the server. </p>
+</td></tr>
 <tr><td class="fieldname"><a id="a0a05f974238733a0a1a4826800c7d3dea2cfb2f18e5085ad2cd38c546253b6a97" name="a0a05f974238733a0a1a4826800c7d3dea2cfb2f18e5085ad2cd38c546253b6a97"></a>UnableToConnectToServer&#160;</td><td class="fielddoc"><p>The client failed to establish a connection with the server. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a0a05f974238733a0a1a4826800c7d3dea22f873d11b9699c4e8a89a1558f0929f" name="a0a05f974238733a0a1a4826800c7d3dea22f873d11b9699c4e8a89a1558f0929f"></a>UnableToSendMessage&#160;</td><td class="fielddoc"><p>The client failed to send a message to the server. </p>
@@ -422,11 +434,104 @@ template&lt;typename SuccessType&gt; </div>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="SyncServer_8hpp_source.html#l00040">40</a> of file <a class="el" href="SyncServer_8hpp_source.html">SyncServer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SyncServer_8hpp_source.html#l00041">41</a> of file <a class="el" href="SyncServer_8hpp_source.html">SyncServer.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a8606c1db6c1243a07ed017baeb0c85fd" name="a8606c1db6c1243a07ed017baeb0c85fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8606c1db6c1243a07ed017baeb0c85fd">&#9670;&#160;</a></span>ValidateRequestResponsePairStrategy</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#a8606c1db6c1243a07ed017baeb0c85fd">ipcourier::ValidateRequestResponsePairStrategy</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel strong">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Defines strategies for validating the consistency of request and response Protocol Buffer message pairs. </p>
+<p>This enumeration helps ensure that the <span class="tt"><a class="el" href="classipcourier_1_1SyncClient.html" title="A synchronous client for inter-process communication using Protocol Buffers over Unix Domain Sockets.">SyncClient</a></span> sends and receives messages that conform to the expected types and structures defined by the server's API. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="structipcourier_1_1SyncClientOptions.html#ac1aa486f58aa06654400269bee2e3959" title="Specifies the strategy for validating request-response pairs during communication.">SyncClientOptions::validate_req_res_pair_strategy</a> </dd></dl>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a8606c1db6c1243a07ed017baeb0c85fdad4cd02c0a5c55938454a86ada22269cf" name="a8606c1db6c1243a07ed017baeb0c85fdad4cd02c0a5c55938454a86ada22269cf"></a>NoValidation&#160;</td><td class="fielddoc"><p>No validation is performed on outgoing requests. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a8606c1db6c1243a07ed017baeb0c85fda090c85f5b96897d861273592b31a12d9" name="a8606c1db6c1243a07ed017baeb0c85fda090c85f5b96897d861273592b31a12d9"></a>ManualRegistration&#160;</td><td class="fielddoc"><p>Request and response message type pairs are manually registered for validation. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a8606c1db6c1243a07ed017baeb0c85fdab1f4097596ba8d92abf3dd9821209402" name="a8606c1db6c1243a07ed017baeb0c85fdab1f4097596ba8d92abf3dd9821209402"></a>ServerReflection&#160;</td><td class="fielddoc"><p>The client queries the server to get pairs for validation. </p>
+</td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="SyncClient_8hpp_source.html#l00068">68</a> of file <a class="el" href="SyncClient_8hpp_source.html">SyncClient.hpp</a>.</p>
 
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
+<a id="aaa3c04c3a3fc6ccb63b30cac4bbb4df9" name="aaa3c04c3a3fc6ccb63b30cac4bbb4df9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa3c04c3a3fc6ccb63b30cac4bbb4df9">&#9670;&#160;</a></span>convertSyncServerErrorToString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string ipcourier::convertSyncServerErrorToString </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a887d75cb647a50bc2e18847c2732c6e7">SyncServerError</a></td>          <td class="paramname"><span class="paramname"><em>error_type</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts a <a class="el" href="#a887d75cb647a50bc2e18847c2732c6e7" title="Enumeration of specific error codes for the synchronous server.">SyncServerError</a> enum value to its string representation. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">error_type</td><td>The <a class="el" href="#a887d75cb647a50bc2e18847c2732c6e7" title="Enumeration of specific error codes for the synchronous server.">SyncServerError</a> enum value to convert to string. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>String representation of the error type. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a887d75cb647a50bc2e18847c2732c6e7" title="Enumeration of specific error codes for the synchronous server.">SyncServerError</a> </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="SyncServer_8hpp_source.html#l00160">std::formatter&lt; ipcourier::SyncServerError &gt;::format()</a>.</p>
+
+</div>
+</div>
+<a id="a271e6bf9a2fb34c2cc0978614b932efa" name="a271e6bf9a2fb34c2cc0978614b932efa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a271e6bf9a2fb34c2cc0978614b932efa">&#9670;&#160;</a></span>convertValidateRequestResponsePairStrategyToString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string ipcourier::convertValidateRequestResponsePairStrategyToString </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a8606c1db6c1243a07ed017baeb0c85fd">ValidateRequestResponsePairStrategy</a></td>          <td class="paramname"><span class="paramname"><em>strategy</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts a <span class="tt"><a class="el" href="#a8606c1db6c1243a07ed017baeb0c85fd" title="Defines strategies for validating the consistency of request and response Protocol Buffer message pai...">ValidateRequestResponsePairStrategy</a></span> enum value to its string representation. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">strategy</td><td><span class="tt"><a class="el" href="#a8606c1db6c1243a07ed017baeb0c85fd" title="Defines strategies for validating the consistency of request and response Protocol Buffer message pai...">ValidateRequestResponsePairStrategy</a></span> to convert to string. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>String representation of the strategy. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a8606c1db6c1243a07ed017baeb0c85fd" title="Defines strategies for validating the consistency of request and response Protocol Buffer message pai...">ValidateRequestResponsePairStrategy</a> </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="SyncClient_8hpp_source.html#l00173">ipcourier::SyncClient::sendRequest()</a>.</p>
+
+</div>
+</div>
 <a id="af776ebfdc36f4bd7833a73cd22efc244" name="af776ebfdc36f4bd7833a73cd22efc244"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af776ebfdc36f4bd7833a73cd22efc244">&#9670;&#160;</a></span>createProtoPayload()</h2>
 
@@ -520,7 +625,7 @@ template&lt;IsDerivedFromProtoMessage ProtoType&gt; </div>
 
 <p class="reference">References <a class="el" href="#af776ebfdc36f4bd7833a73cd22efc244">createProtoPayload()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="SyncServer_8hpp_source.html#l00110">ipcourier::SyncServer::registerHandler()</a>, and <a class="el" href="SyncClient_8hpp_source.html#l00148">ipcourier::SyncClient::sendRequest()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="SyncServer_8hpp_source.html#l00121">ipcourier::SyncServer::registerHandler()</a>, and <a class="el" href="SyncClient_8hpp_source.html#l00173">ipcourier::SyncClient::sendRequest()</a>.</p>
 
 </div>
 </div>
@@ -588,7 +693,7 @@ template&lt;IsDerivedFromProtoMessage ProtoType&gt; </div>
 
 <p class="reference">References <a class="el" href="ProtobufTools_8hpp_source.html#l00043">DeserializationFailed</a>, <a class="el" href="ProtobufTools_8hpp_source.html#l00041">InvalidFormat</a>, and <a class="el" href="ProtobufTools_8hpp_source.html#l00042">TypeMismatch</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="SyncClient_8hpp_source.html#l00148">ipcourier::SyncClient::sendRequest()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="SyncClient_8hpp_source.html#l00173">ipcourier::SyncClient::sendRequest()</a>.</p>
 
 </div>
 </div>

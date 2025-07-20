@@ -27,6 +27,7 @@
 #include <InterProcessCourier/Error.hpp>
 #include <InterProcessCourier/ProtobufTools.hpp>
 #include <memory>
+#include <format>
 #include <functional>
 #include <unordered_map>
 #include <string>
@@ -44,6 +45,15 @@ enum class SyncServerError {
     UnableToDeserializeMessage, ///< The server failed to deserialize an incoming message into a Protocol Buffer.
     UnableToSerializeMessage,   ///< The server failed to serialize a response Protocol Buffer message.
 };
+
+/**
+ * @brief Converts a SyncServerError enum value to its string representation.
+ *
+ * @param error_type The SyncServerError enum value to convert to string.
+ * @return String representation of the error type.
+ * @see SyncServerError
+ */
+std::string convertSyncServerErrorToString(SyncServerError error_type);
 
 /**
  * @brief Type alias for the result of synchronous server operations.
@@ -99,6 +109,7 @@ public:
      * will be invoked with the deserialized request message. The return value of the
      * handler (a `ResponseType` message) will be serialized and sent back to the client.
      * If a `RequestType` was previously registered to a different ` ResponseType `, then it will be overwritten.
+     * Handlers should be registered before calling `start()` as the client might use reflection to discover request/response pairs on connect.
      *
      * @tparam RequestType The type of the Protocol Buffer request message this handler processes.
      * Must derive from `google::protobuf::Message`.
@@ -108,11 +119,14 @@ public:
      */
     template <IsDerivedFromProtoMessage RequestType, IsDerivedFromProtoMessage ResponseType>
     void registerHandler(HandlerForSpecificType<RequestType, ResponseType> handler) {
-        const auto type_name = RequestType::descriptor()->full_name();
-        m_handlers[type_name] = [handler = std::move(handler)](const BaseProtoType& msg) {
+        const auto request_type_name = RequestType::descriptor()->full_name();
+        const auto response_type_name = ResponseType::descriptor()->full_name();
+
+        m_handlers[request_type_name] = [handler = std::move(handler)](const BaseProtoType& msg) {
             const auto response = handler(static_cast<const RequestType&>(msg));
             return makePayloadFromProto(response);
         };
+        m_request_response_pairs[request_type_name] = response_type_name;
     }
 
     /**
@@ -128,6 +142,7 @@ public:
 
 private:
     std::unordered_map<std::string, GenericHandler> m_handlers;
+    std::unordered_map<std::string, std::string> m_request_response_pairs;
     std::unique_ptr<SyncUnixDomainServer> m_server;
 
     SyncServerResult<SerializedProtoPayload> acceptMessage(const SerializedProtoPayload& serialized);
@@ -135,5 +150,16 @@ private:
     std::unique_ptr<BaseProtoType> tryParseProtobuf(const SerializedProtoPayload& serialized) const;
 };
 } // namespace ipcourier
+
+template <>
+struct std::formatter<ipcourier::SyncServerError> {
+    static constexpr auto parse(const std::format_parse_context& ctx) {
+        return ctx.begin();
+    }
+
+    static auto format(const ipcourier::SyncServerError error_type, std::format_context& ctx) {
+        return std::format_to(ctx.out(), "{}", ipcourier::convertSyncServerErrorToString(error_type));
+    }
+};
 
 #endif  // INTER_PROCESS_COURIER_SERVER_HPP

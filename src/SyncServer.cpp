@@ -17,9 +17,27 @@
 
 #include <InterProcessCourier/SyncServer.hpp>
 #include <boost/asio.hpp>
+#include "InternalRequests.pb.h"
 #include "SyncUnixDomainServer.hpp"
 
 namespace ipcourier {
+std::string convertSyncServerErrorToString(const SyncServerError error_type) {
+    switch (error_type) {
+        case SyncServerError::UnknownError:
+            return "Unknown error";
+        case SyncServerError::HandlerNotRegistered:
+            return "Handler not registered";
+        case SyncServerError::RuntimeError:
+            return "Runtime error";
+        case SyncServerError::UnableToDeserializeMessage:
+            return "Unable to deserialize message";
+        case SyncServerError::UnableToSerializeMessage:
+            return "Unable to serialize message";
+    }
+
+    throw std::logic_error("Invalid SyncServerError given for conversion to string");
+}
+
 SyncServer::SyncServer(boost::asio::io_context& io_context, const std::string& socket_addr) {
     m_server = std::make_unique<SyncUnixDomainServer>(io_context,
                                                       socket_addr,
@@ -29,14 +47,24 @@ SyncServer::SyncServer(boost::asio::io_context& io_context, const std::string& s
                                                           if (!accept_result.has_value()) {
                                                               throw std::runtime_error(
                                                                   std::format(
-                                                                      "Error while accepting message: {}:{}",
-                                                                      static_cast<int>(accept_result.error().type),
-                                                                      // todo: conv to string repr for above int
-                                                                      accept_result.error().message));
+                                                                      "Error while accepting message: {}",
+                                                                      accept_result.error())
+                                                                  );
                                                           }
 
                                                           return accept_result.value();
                                                       });
+    registerHandler<internal_request_proto::GetRequestResponseMappingPairsRequest,
+                    internal_request_proto::GetRequestResponseMappingPairsResponse>([this](const auto&) {
+        internal_request_proto::GetRequestResponseMappingPairsResponse response;
+
+        auto* proto_map = response.mutable_mappings();
+        for (const auto& [request_name, response_name] : m_request_response_pairs) {
+            proto_map->emplace(request_name, response_name);
+        }
+
+        return response;
+    });
 }
 
 SyncServerResult<void> SyncServer::start() {
@@ -49,8 +77,7 @@ SyncServerResult<void> SyncServer::start() {
     return {};
 }
 
-SyncServer::~SyncServer() {
-}
+SyncServer::~SyncServer() = default;
 
 SyncServerResult<SerializedProtoPayload> SyncServer::acceptMessage(const SerializedProtoPayload& serialized) {
     const std::unique_ptr<BaseProtoType> msg = tryParseProtobuf(serialized);

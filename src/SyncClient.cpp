@@ -16,27 +16,68 @@
  ***************************************************************************/
 
 #include <InterProcessCourier/SyncClient.hpp>
+#include <stdexcept>
+#include "InternalRequests.pb.h"
 #include <boost/asio.hpp>
 #include "SyncUnixDomainClient.hpp"
 
 namespace ipcourier {
+std::string convertValidateRequestResponsePairStrategyToString(const ValidateRequestResponsePairStrategy strategy) {
+    switch (strategy) {
+        case ValidateRequestResponsePairStrategy::NoValidation:
+            return "No Validation";
+        case ValidateRequestResponsePairStrategy::ManualRegistration:
+            return "Manual Registration";
+        case ValidateRequestResponsePairStrategy::ServerReflection:
+            return "Server Reflection";
+    }
+
+    throw std::logic_error("Invalid ValidateRequestResponsePairStrategy given for conversion to string");
+}
+
 SyncClient::SyncClient(boost::asio::io_context& io_context,
                        SyncClientOptions client_options) : m_client_options(std::move(client_options)) {
     m_client = std::make_unique<SyncUnixDomainClient>(io_context);
 }
 
-SyncClient::~SyncClient() {
-}
+SyncClient::~SyncClient() = default;
 
-SyncClientResult<void> SyncClient::connect() const {
+SyncClientResult<void> SyncClient::connect() {
     const auto connect_result = m_client->connect(m_client_options.socket_addr);
     if (!connect_result.has_value()) {
         return std::unexpected(Error(SyncClientError::UnableToConnectToServer, connect_result.error().message));
     }
 
+    if (m_client_options.validate_req_res_pair_strategy == ValidateRequestResponsePairStrategy::ServerReflection) {
+        const auto reflect_result = reflectRequestResponseMappingPairs();
+        if (!reflect_result.has_value()) {
+            return std::unexpected(reflect_result.error());
+        }
+    }
+
     return {};
 }
 
+SyncClientResult<void> SyncClient::reflectRequestResponseMappingPairs() {
+    using MappingReflectionRequest = internal_request_proto::GetRequestResponseMappingPairsRequest;
+    using MappingReflectionResponse = internal_request_proto::GetRequestResponseMappingPairsResponse;
+
+    registerRequestResponsePair<MappingReflectionRequest, MappingReflectionResponse>();
+
+    const auto mapping_reflect_result = sendRequest<MappingReflectionRequest, MappingReflectionResponse>(
+        MappingReflectionRequest{});
+    if (!mapping_reflect_result.has_value()) {
+        return std::unexpected(Error(SyncClientError::UnableToReflectMappings,
+                                     mapping_reflect_result.error().message));
+    }
+
+    const auto& mapping_reflect_response = mapping_reflect_result.value();
+    for (const auto& [key, value] : mapping_reflect_response.mappings()) {
+        m_request_response_pairs[key] = value;
+    }
+
+    return {};
+}
 
 SyncClientResult<std::string> SyncClient::sendAndReceiveMessage(const SerializedProtoPayload& serialized) const {
     const auto send_result = m_client->sendMessage(serialized);

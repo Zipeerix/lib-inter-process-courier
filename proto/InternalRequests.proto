@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package ipcourier.internal_request_proto;
+
+message GetRequestResponseMappingPairsRequest {
+}
+
+message GetRequestResponseMappingPairsResponse {
+  map<string, string> mappings = 1;
+}

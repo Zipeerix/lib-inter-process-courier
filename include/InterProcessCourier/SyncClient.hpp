@@ -38,6 +38,7 @@ namespace ipcourier {
 enum class SyncClientError {
     UnknownError,               ///< An unspecified error occurred.
     BadRequestToResponsePair,   ///< The requested Protocol Buffer type pair (request/response) is not registered
+    UnableToReflectMappings,    ///< The client failed to reflect the request-response mappings from the server.
     UnableToConnectToServer,    ///< The client failed to establish a connection with the server.
     UnableToSendMessage,        ///< The client failed to send a message to the server.
     UnableToReceiveMessage,     ///< The client failed to receive a message from the server.
@@ -58,6 +59,29 @@ using SyncClientResult = std::expected<SuccessType, Error<SyncClientError> >;
 class SyncUnixDomainClient;
 
 /**
+ * @brief Defines strategies for validating the consistency of request and response Protocol Buffer message pairs.
+ *
+ * This enumeration helps ensure that the `SyncClient` sends and receives messages that conform
+ * to the expected types and structures defined by the server's API.
+ * @see SyncClientOptions::validate_req_res_pair_strategy
+ */
+enum class ValidateRequestResponsePairStrategy {
+    NoValidation,       ///< No validation is performed on outgoing requests
+    ManualRegistration, ///< Request and response message type pairs are manually registered for validation.
+    ServerReflection,   ///< The client queries the server to get pairs for validation.
+};
+
+/**
+ * @brief Converts a `ValidateRequestResponsePairStrategy` enum value to its string representation.
+ *
+ * @param strategy `ValidateRequestResponsePairStrategy` to convert to string.
+ * @return String representation of the strategy.
+ * @see ValidateRequestResponsePairStrategy
+ */
+std::string convertValidateRequestResponsePairStrategyToString(
+    ValidateRequestResponsePairStrategy strategy);
+
+/**
  * @brief Structure to hold various configuration options for the SyncClient.
  */
 struct SyncClientOptions {
@@ -67,13 +91,13 @@ struct SyncClientOptions {
     std::string socket_addr;
 
     /**
-     * @brief A boolean flag indicating whether the client should validate the request-response pair.
-     *
-     * If set to `true`, the client will perform checks to ensure the response
-     * received corresponds correctly to the request sent in sendRequest.
-     * If `false`, such validations will be skipped.
+     * @brief Specifies the strategy for validating request-response pairs during communication.
+     * This ensures that the client's outgoing requests and incoming responses adhere to
+     * the expected Protobuf message types and structures defined by the server.
+     * @see ValidateRequestResponsePairStrategy
      */
-    bool validate_req_res_pair = true;
+    ValidateRequestResponsePairStrategy validate_req_res_pair_strategy =
+        ValidateRequestResponsePairStrategy::ServerReflection;
 };
 
 /**
@@ -99,9 +123,10 @@ public:
     /**
      * @brief Attempts to establish a connection with the server at the specified socket address.
      *
-     * @return SyncClientResult<void> A result indicating success or an error if connection fails.
+     * @return SyncClientResult<void> A result indicating success or an error if the connection fails.
+     * @retval SyncClientError::UnableToReflectMappings If the client failed to reflect the request-response mappings from the server.
      */
-    SyncClientResult<void> connect() const;
+    SyncClientResult<void> connect();
 
     /**
      * @brief Registers the expected response Protocol Buffer type for a given request Protocol Buffer type.
@@ -146,7 +171,7 @@ public:
      */
     template <IsDerivedFromProtoMessage RequestType, IsDerivedFromProtoMessage ResponseType>
     SyncClientResult<ResponseType> sendRequest(const RequestType& request) {
-        if (m_client_options.validate_req_res_pair) {
+        if (m_client_options.validate_req_res_pair_strategy != ValidateRequestResponsePairStrategy::NoValidation) {
             const auto request_name = RequestType::descriptor()->full_name();
             const auto response_name = ResponseType::descriptor()->full_name();
 
@@ -154,12 +179,14 @@ public:
             if (it == m_request_response_pairs.end() || it->second != response_name) {
                 return std::unexpected(Error(SyncClientError::BadRequestToResponsePair,
                                              std::format(
-                                                 "Request type '{}' expects response type '{}', but '{}' was provided or not registered.",
+                                                 "Request type '{}' expects response type '{}', but '{}' was provided. Current strategy: {}",
                                                  request_name,
                                                  (it != m_request_response_pairs.end()
                                                       ? it->second
                                                       : "<Not Registered>"),
-                                                 response_name)));
+                                                 response_name,
+                                                 convertValidateRequestResponsePairStrategyToString(
+                                                     m_client_options.validate_req_res_pair_strategy))));
             }
         }
 
@@ -185,6 +212,8 @@ private:
     std::unordered_map<std::string, std::string> m_request_response_pairs;
 
     SyncClientResult<std::string> sendAndReceiveMessage(const SerializedProtoPayload& serialized) const;
+
+    SyncClientResult<void> reflectRequestResponseMappingPairs();
 };
 } // namespace ipcourier
 
