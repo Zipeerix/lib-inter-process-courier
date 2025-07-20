@@ -103,6 +103,8 @@ Data Structures</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a generic error structure within the InterProcessCourier library.  <a href="structipcourier_1_1Error.html#details">More...</a><br /></td></tr>
 <tr class="memitem:SyncClient" id="r_SyncClient"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipcourier_1_1SyncClient.html">SyncClient</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A synchronous client for inter-process communication using Protocol Buffers over Unix Domain Sockets.  <a href="classipcourier_1_1SyncClient.html#details">More...</a><br /></td></tr>
+<tr class="memitem:SyncClientOptions" id="r_SyncClientOptions"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipcourier_1_1SyncClientOptions.html">SyncClientOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure to hold various configuration options for the <a class="el" href="classipcourier_1_1SyncClient.html" title="A synchronous client for inter-process communication using Protocol Buffers over Unix Domain Sockets.">SyncClient</a>.  <a href="structipcourier_1_1SyncClientOptions.html#details">More...</a><br /></td></tr>
 <tr class="memitem:SyncServer" id="r_SyncServer"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipcourier_1_1SyncServer.html">SyncServer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A synchronous server for inter-process communication using Protocol Buffers over Unix Domain Sockets.  <a href="classipcourier_1_1SyncServer.html#details">More...</a><br /></td></tr>
 </table><table class="memberdecls">
@@ -120,6 +122,8 @@ Typedefs</h2></td></tr>
 <tr class="memdesc:a0c76265d3f1060a08c57b7b0a870f2f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type alias for the result of Protocol Buffer tool operations.  <br /></td></tr>
 <tr class="memitem:a8467e7342308cd44d8e84b501f971146" id="r_a8467e7342308cd44d8e84b501f971146"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8467e7342308cd44d8e84b501f971146">BaseProtoType</a> = google::protobuf::Message</td></tr>
 <tr class="memdesc:a8467e7342308cd44d8e84b501f971146"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type alias for a base type of all Protocol Buffer messages.  <br /></td></tr>
+<tr class="memitem:adaeb345a18b9ef28aedf1388ecac73b2" id="r_adaeb345a18b9ef28aedf1388ecac73b2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adaeb345a18b9ef28aedf1388ecac73b2">NoMessage</a> = google::protobuf::Empty</td></tr>
+<tr class="memdesc:adaeb345a18b9ef28aedf1388ecac73b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type alias for an empty protobuf message.  <br /></td></tr>
 <tr class="memitem:a1189cec51d2fdcc0099e09d0f3e203f2" id="r_a1189cec51d2fdcc0099e09d0f3e203f2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1189cec51d2fdcc0099e09d0f3e203f2">SerializedProtoPayload</a> = std::string</td></tr>
 <tr class="memdesc:a1189cec51d2fdcc0099e09d0f3e203f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type alias for serialized protocol buffer payload.  <br /></td></tr>
 <tr class="memitem:a6ab44005a378a35bc5b2ba98f79adbf5" id="r_a6ab44005a378a35bc5b2ba98f79adbf5"><td class="memTemplParams" colspan="2">template&lt;typename SuccessType&gt; </td></tr>
@@ -138,11 +142,12 @@ Enumerations</h2></td></tr>
 <tr class="memdesc:af463c0bb5d84a29917032ec0f39bdae6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Error codes for Protocol Buffer payload parsing operations.  <a href="#af463c0bb5d84a29917032ec0f39bdae6">More...</a><br /></td></tr>
 <tr class="memitem:a0a05f974238733a0a1a4826800c7d3de" id="r_a0a05f974238733a0a1a4826800c7d3de"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0a05f974238733a0a1a4826800c7d3de">SyncClientError</a> { <br />
 &#160;&#160;<a class="el" href="#a0a05f974238733a0a1a4826800c7d3deabfaef30f1c8011c5cefa38ae470fb7aa">UnknownError</a>
+, <a class="el" href="#a0a05f974238733a0a1a4826800c7d3dea61ade98e7c5d6d1a4b06739496c8de56">BadRequestToResponsePair</a>
 , <a class="el" href="#a0a05f974238733a0a1a4826800c7d3dea2cfb2f18e5085ad2cd38c546253b6a97">UnableToConnectToServer</a>
 , <a class="el" href="#a0a05f974238733a0a1a4826800c7d3dea22f873d11b9699c4e8a89a1558f0929f">UnableToSendMessage</a>
-, <a class="el" href="#a0a05f974238733a0a1a4826800c7d3dea4fac2be323a198976313b9f8d129c344">UnableToReceiveMessage</a>
 , <br />
-&#160;&#160;<a class="el" href="#a0a05f974238733a0a1a4826800c7d3dea0ebbd6193b9f318fa97a693c03a8a1ae">UnableToParseReturnedProto</a>
+&#160;&#160;<a class="el" href="#a0a05f974238733a0a1a4826800c7d3dea4fac2be323a198976313b9f8d129c344">UnableToReceiveMessage</a>
+, <a class="el" href="#a0a05f974238733a0a1a4826800c7d3dea0ebbd6193b9f318fa97a693c03a8a1ae">UnableToParseReturnedProto</a>
 <br />
  }</td></tr>
 <tr class="memdesc:a0a05f974238733a0a1a4826800c7d3de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enumeration of specific error codes for the synchronous client.  <a href="#a0a05f974238733a0a1a4826800c7d3de">More...</a><br /></td></tr>
@@ -187,7 +192,25 @@ Functions</h2></td></tr>
 
 <p>Type alias for a base type of all Protocol Buffer messages. </p>
 
-<p class="definition">Definition at line <a class="el" href="ProtobufTools_8hpp_source.html#l00057">57</a> of file <a class="el" href="ProtobufTools_8hpp_source.html">ProtobufTools.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ProtobufTools_8hpp_source.html#l00058">58</a> of file <a class="el" href="ProtobufTools_8hpp_source.html">ProtobufTools.hpp</a>.</p>
+
+</div>
+</div>
+<a id="adaeb345a18b9ef28aedf1388ecac73b2" name="adaeb345a18b9ef28aedf1388ecac73b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adaeb345a18b9ef28aedf1388ecac73b2">&#9670;&#160;</a></span>NoMessage</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="#adaeb345a18b9ef28aedf1388ecac73b2">ipcourier::NoMessage</a> = google::protobuf::Empty</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Type alias for an empty protobuf message. </p>
+
+<p class="definition">Definition at line <a class="el" href="ProtobufTools_8hpp_source.html#l00061">61</a> of file <a class="el" href="ProtobufTools_8hpp_source.html">ProtobufTools.hpp</a>.</p>
 
 </div>
 </div>
@@ -214,7 +237,7 @@ template&lt;typename SuccessType&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="ProtobufTools_8hpp_source.html#l00054">54</a> of file <a class="el" href="ProtobufTools_8hpp_source.html">ProtobufTools.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ProtobufTools_8hpp_source.html#l00055">55</a> of file <a class="el" href="ProtobufTools_8hpp_source.html">ProtobufTools.hpp</a>.</p>
 
 </div>
 </div>
@@ -232,7 +255,7 @@ template&lt;typename SuccessType&gt; </div>
 
 <p>Type alias for serialized protocol buffer payload. </p>
 
-<p class="definition">Definition at line <a class="el" href="ProtobufTools_8hpp_source.html#l00067">67</a> of file <a class="el" href="ProtobufTools_8hpp_source.html">ProtobufTools.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ProtobufTools_8hpp_source.html#l00071">71</a> of file <a class="el" href="ProtobufTools_8hpp_source.html">ProtobufTools.hpp</a>.</p>
 
 </div>
 </div>
@@ -259,7 +282,7 @@ template&lt;typename SuccessType&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="SyncClient_8hpp_source.html#l00055">55</a> of file <a class="el" href="SyncClient_8hpp_source.html">SyncClient.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SyncClient_8hpp_source.html#l00056">56</a> of file <a class="el" href="SyncClient_8hpp_source.html">SyncClient.hpp</a>.</p>
 
 </div>
 </div>
@@ -321,7 +344,7 @@ template&lt;typename SuccessType&gt; </div>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="ProtobufTools_8hpp_source.html#l00039">39</a> of file <a class="el" href="ProtobufTools_8hpp_source.html">ProtobufTools.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ProtobufTools_8hpp_source.html#l00040">40</a> of file <a class="el" href="ProtobufTools_8hpp_source.html">ProtobufTools.hpp</a>.</p>
 
 </div>
 </div>
@@ -348,6 +371,8 @@ template&lt;typename SuccessType&gt; </div>
 <p>Enumeration of specific error codes for the synchronous client. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a0a05f974238733a0a1a4826800c7d3deabfaef30f1c8011c5cefa38ae470fb7aa" name="a0a05f974238733a0a1a4826800c7d3deabfaef30f1c8011c5cefa38ae470fb7aa"></a>UnknownError&#160;</td><td class="fielddoc"><p>An unspecified error occurred. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a0a05f974238733a0a1a4826800c7d3dea61ade98e7c5d6d1a4b06739496c8de56" name="a0a05f974238733a0a1a4826800c7d3dea61ade98e7c5d6d1a4b06739496c8de56"></a>BadRequestToResponsePair&#160;</td><td class="fielddoc"><p>The requested Protocol Buffer type pair (request/response) is not registered. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a0a05f974238733a0a1a4826800c7d3dea2cfb2f18e5085ad2cd38c546253b6a97" name="a0a05f974238733a0a1a4826800c7d3dea2cfb2f18e5085ad2cd38c546253b6a97"></a>UnableToConnectToServer&#160;</td><td class="fielddoc"><p>The client failed to establish a connection with the server. </p>
 </td></tr>
@@ -432,7 +457,7 @@ template&lt;typename SuccessType&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="#a1189cec51d2fdcc0099e09d0f3e203f2" title="Type alias for serialized protocol buffer payload.">SerializedProtoPayload</a> The formatted payload string </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="ProtobufTools_8hpp_source.html#l00097">makePayloadFromProto()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ProtobufTools_8hpp_source.html#l00101">makePayloadFromProto()</a>.</p>
 
 </div>
 </div>
@@ -491,11 +516,11 @@ template&lt;IsDerivedFromProtoMessage ProtoType&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>std::string The formatted payload string containing type info and serialized data</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#a6427e52a0951a9315a0e92ae778b3bac" title="Deserializes a payload string back into a Protocol Buffer message.">makeProtoFromPayload</a> for the reverse operation </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ProtobufTools_8hpp_source.html#l00097">97</a> of file <a class="el" href="ProtobufTools_8hpp_source.html">ProtobufTools.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ProtobufTools_8hpp_source.html#l00101">101</a> of file <a class="el" href="ProtobufTools_8hpp_source.html">ProtobufTools.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="#af776ebfdc36f4bd7833a73cd22efc244">createProtoPayload()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="SyncServer_8hpp_source.html#l00109">ipcourier::SyncServer::registerHandler()</a>, and <a class="el" href="SyncClient_8hpp_source.html#l00105">ipcourier::SyncClient::sendRequest()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="SyncServer_8hpp_source.html#l00109">ipcourier::SyncServer::registerHandler()</a>, and <a class="el" href="SyncClient_8hpp_source.html#l00147">ipcourier::SyncClient::sendRequest()</a>.</p>
 
 </div>
 </div>
@@ -555,15 +580,15 @@ template&lt;IsDerivedFromProtoMessage ProtoType&gt; </div>
 <div class="line">} <span class="keywordflow">else</span> {</div>
 <div class="line"><span class="comment">// Handle result.error()</span></div>
 <div class="line">}</div>
-<div class="ttc" id="anamespaceipcourier_html_a1189cec51d2fdcc0099e09d0f3e203f2"><div class="ttname"><a href="#a1189cec51d2fdcc0099e09d0f3e203f2">ipcourier::SerializedProtoPayload</a></div><div class="ttdeci">std::string SerializedProtoPayload</div><div class="ttdoc">Type alias for serialized protocol buffer payload.</div><div class="ttdef"><b>Definition</b> <a href="ProtobufTools_8hpp_source.html#l00067">ProtobufTools.hpp:67</a></div></div>
-<div class="ttc" id="anamespaceipcourier_html_a6427e52a0951a9315a0e92ae778b3bac"><div class="ttname"><a href="#a6427e52a0951a9315a0e92ae778b3bac">ipcourier::makeProtoFromPayload</a></div><div class="ttdeci">ProtobufToolResult&lt; ProtoType &gt; makeProtoFromPayload(const SerializedProtoPayload &amp;payload)</div><div class="ttdoc">Deserializes a payload string back into a Protocol Buffer message.</div><div class="ttdef"><b>Definition</b> <a href="ProtobufTools_8hpp_source.html#l00137">ProtobufTools.hpp:137</a></div></div>
+<div class="ttc" id="anamespaceipcourier_html_a1189cec51d2fdcc0099e09d0f3e203f2"><div class="ttname"><a href="#a1189cec51d2fdcc0099e09d0f3e203f2">ipcourier::SerializedProtoPayload</a></div><div class="ttdeci">std::string SerializedProtoPayload</div><div class="ttdoc">Type alias for serialized protocol buffer payload.</div><div class="ttdef"><b>Definition</b> <a href="ProtobufTools_8hpp_source.html#l00071">ProtobufTools.hpp:71</a></div></div>
+<div class="ttc" id="anamespaceipcourier_html_a6427e52a0951a9315a0e92ae778b3bac"><div class="ttname"><a href="#a6427e52a0951a9315a0e92ae778b3bac">ipcourier::makeProtoFromPayload</a></div><div class="ttdeci">ProtobufToolResult&lt; ProtoType &gt; makeProtoFromPayload(const SerializedProtoPayload &amp;payload)</div><div class="ttdoc">Deserializes a payload string back into a Protocol Buffer message.</div><div class="ttdef"><b>Definition</b> <a href="ProtobufTools_8hpp_source.html#l00141">ProtobufTools.hpp:141</a></div></div>
 </div><!-- fragment --> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ProtobufTools_8hpp_source.html#l00137">137</a> of file <a class="el" href="ProtobufTools_8hpp_source.html">ProtobufTools.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ProtobufTools_8hpp_source.html#l00141">141</a> of file <a class="el" href="ProtobufTools_8hpp_source.html">ProtobufTools.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ProtobufTools_8hpp_source.html#l00042">DeserializationFailed</a>, <a class="el" href="ProtobufTools_8hpp_source.html#l00040">InvalidFormat</a>, and <a class="el" href="ProtobufTools_8hpp_source.html#l00041">TypeMismatch</a>.</p>
+<p class="reference">References <a class="el" href="ProtobufTools_8hpp_source.html#l00043">DeserializationFailed</a>, <a class="el" href="ProtobufTools_8hpp_source.html#l00041">InvalidFormat</a>, and <a class="el" href="ProtobufTools_8hpp_source.html#l00042">TypeMismatch</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="SyncClient_8hpp_source.html#l00105">ipcourier::SyncClient::sendRequest()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="SyncClient_8hpp_source.html#l00147">ipcourier::SyncClient::sendRequest()</a>.</p>
 
 </div>
 </div>

@@ -37,6 +37,7 @@ namespace ipcourier {
  */
 enum class SyncClientError {
     UnknownError,               ///< An unspecified error occurred.
+    BadRequestToResponsePair,   ///< The requested Protocol Buffer type pair (request/response) is not registered
     UnableToConnectToServer,    ///< The client failed to establish a connection with the server.
     UnableToSendMessage,        ///< The client failed to send a message to the server.
     UnableToReceiveMessage,     ///< The client failed to receive a message from the server.
@@ -57,6 +58,25 @@ using SyncClientResult = std::expected<SuccessType, Error<SyncClientError> >;
 class SyncUnixDomainClient;
 
 /**
+ * @brief Structure to hold various configuration options for the SyncClient.
+ */
+struct SyncClientOptions {
+    /**
+     * @brief The path to the Unix Domain Socket file the client should connect to.
+     */
+    std::string socket_addr;
+
+    /**
+     * @brief A boolean flag indicating whether the client should validate the request-response pair.
+     *
+     * If set to `true`, the client will perform checks to ensure the response
+     * received corresponds correctly to the request sent in sendRequest.
+     * If `false`, such validations will be skipped.
+     */
+    bool validate_req_res_pair = true;
+};
+
+/**
  * @brief A synchronous client for inter-process communication using Protocol Buffers
  * over Unix Domain Sockets.
  *
@@ -70,9 +90,9 @@ public:
      * @brief Constructs a SyncClient instance.
      *
      * @param io_context Boost::Asio io_context, note that this is a synchronous client, so no async operation will run
-     * @param socket_addr The path to the Unix Domain Socket file to connect to.
+     * @param client_options Various settings relating to the client. @see SyncClientOptions
      */
-    SyncClient(boost::asio::io_context& io_context, const std::string& socket_addr);
+    SyncClient(boost::asio::io_context& io_context, SyncClientOptions client_options);
 
     ~SyncClient();
 
@@ -82,6 +102,27 @@ public:
      * @return SyncClientResult<void> A result indicating success or an error if connection fails.
      */
     SyncClientResult<void> connect() const;
+
+    /**
+     * @brief Registers the expected response Protocol Buffer type for a given request Protocol Buffer type.
+     *
+     * This method is used to explicitly define the valid request-response pairs. When client-side validation
+     * is enabled via `SyncClientOptions::validate_req_res_pair`, calling `sendRequest` with a
+     * `RequestType` that has an unexpected `ResponseType` (i.e., not registered here) will result in an error,
+     * preventing the request from being sent. This helps ensure type safety and correctness in inter-process communication.
+     *
+     * @tparam RequestType The Protocol Buffer message type that represents the request.
+     * Must derive from `google::protobuf::Message`.
+     * @tparam ResponseType The Protocol Buffer message type that represents the expected response for `RequestType`.
+     * Must derive from `google::protobuf::Message`.
+     */
+    template <IsDerivedFromProtoMessage RequestType, IsDerivedFromProtoMessage ResponseType>
+    void registerRequestResponsePair() {
+        const auto request_name = RequestType::descriptor()->full_name();
+        const auto response_name = ResponseType::descriptor()->full_name();
+
+        m_request_response_pairs[request_name] = response_name;
+    }
 
     /**
      * @brief Sends a Protocol Buffer request and receives a Protocol Buffer response synchronously.
@@ -95,6 +136,7 @@ public:
      * @return SyncClientResult<ResponseType> A result containing the deserialized response message on success,
      * or an error if sending, receiving, or parsing fails.
      * @retval ResponseType The deserialized Protocol Buffer response message.
+     * @retval SyncClientError::BadRequestToResponsePair If the `RequestType`, `ResponseType` pair is not registered when the validation setting is enabled.
      * @retval SyncClientError::UnableToSendMessage If the request could not be sent.
      * @retval SyncClientError::UnableToReceiveMessage If no response was received or an error occurred during reception.
      * @retval SyncClientError::UnableToParseReturnedProto If the received payload could not be parsed into `ResponseType`.
@@ -103,6 +145,23 @@ public:
      */
     template <IsDerivedFromProtoMessage RequestType, IsDerivedFromProtoMessage ResponseType>
     SyncClientResult<ResponseType> sendRequest(const RequestType& request) {
+        if (m_client_options.validate_req_res_pair) {
+            const auto request_name = RequestType::descriptor()->full_name();
+            const auto response_name = ResponseType::descriptor()->full_name();
+
+            auto it = m_request_response_pairs.find(request_name);
+            if (it == m_request_response_pairs.end() || it->second != response_name) {
+                return std::unexpected(Error(SyncClientError::BadRequestToResponsePair,
+                                             std::format(
+                                                 "Request type '{}' expects response type '{}', but '{}' was provided or not registered.",
+                                                 request_name,
+                                                 (it != m_request_response_pairs.end()
+                                                      ? it->second
+                                                      : "<Not Registered>"),
+                                                 response_name)));
+            }
+        }
+
         const auto serialized_request = makePayloadFromProto(request);
         const auto send_and_receive_result = sendAndReceiveMessage(serialized_request);
         if (!send_and_receive_result.has_value()) {
@@ -119,8 +178,10 @@ public:
     }
 
 private:
-    std::string m_socket_addr;
+    SyncClientOptions m_client_options;
     std::unique_ptr<SyncUnixDomainClient> m_client;
+
+    std::unordered_map<std::string, std::string> m_request_response_pairs;
 
     SyncClientResult<std::string> sendAndReceiveMessage(const SerializedProtoPayload& serialized) const;
 };

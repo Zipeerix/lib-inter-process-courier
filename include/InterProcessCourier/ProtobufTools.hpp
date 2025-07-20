@@ -23,6 +23,7 @@
 #include <string_view>
 
 #include <google/protobuf/message.h>
+#include <google/protobuf/empty.pb.h>
 
 #include <InterProcessCourier/Error.hpp>
 
@@ -55,6 +56,9 @@ using ProtobufToolResult = std::expected<SuccessType, Error<ProtoPayloadParseErr
 
 /// Type alias for a base type of all Protocol Buffer messages
 using BaseProtoType = google::protobuf::Message;
+
+/// Type alias for an empty protobuf message
+using NoMessage = google::protobuf::Empty;
 
 /**
  * @brief Concept to ensure template types derive from the Protocol Buffer Message base class.

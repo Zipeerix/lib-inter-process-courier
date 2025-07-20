@@ -21,7 +21,7 @@
 
 namespace ipcourier {
 SyncClient::SyncClient(boost::asio::io_context& io_context,
-                       const std::string& socket_addr) : m_socket_addr(socket_addr) {
+                       SyncClientOptions client_options) : m_client_options(std::move(client_options)) {
     m_client = std::make_unique<SyncUnixDomainClient>(io_context);
 }
 
@@ -29,7 +29,7 @@ SyncClient::~SyncClient() {
 }
 
 SyncClientResult<void> SyncClient::connect() const {
-    const auto connect_result = m_client->connect(m_socket_addr);
+    const auto connect_result = m_client->connect(m_client_options.socket_addr);
     if (!connect_result.has_value()) {
         return std::unexpected(Error(SyncClientError::UnableToConnectToServer, connect_result.error().message));
     }
