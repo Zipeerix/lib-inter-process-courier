@@ -110,6 +110,7 @@ public:
      * is enabled via `SyncClientOptions::validate_req_res_pair`, calling `sendRequest` with a
      * `RequestType` that has an unexpected `ResponseType` (i.e., not registered here) will result in an error,
      * preventing the request from being sent. This helps ensure type safety and correctness in inter-process communication.
+     * If a `RequestType` was previously registered to a different ` ResponseType `, then it will be overwritten.
      *
      * @tparam RequestType The Protocol Buffer message type that represents the request.
      * Must derive from `google::protobuf::Message`.

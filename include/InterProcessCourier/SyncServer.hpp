@@ -98,6 +98,7 @@ public:
      * When a client sends a request of `RequestType`, the provided `handler` function
      * will be invoked with the deserialized request message. The return value of the
      * handler (a `ResponseType` message) will be serialized and sent back to the client.
+     * If a `RequestType` was previously registered to a different ` ResponseType `, then it will be overwritten.
      *
      * @tparam RequestType The type of the Protocol Buffer request message this handler processes.
      * Must derive from `google::protobuf::Message`.
