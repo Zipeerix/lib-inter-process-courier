@@ -15,27 +15,43 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef INTER_PROCESS_COURIER_VERSION_HPP
-#define INTER_PROCESS_COURIER_VERSION_HPP
+#ifndef INTER_PROCESS_COURIER_SYNCUNIXDOMAINCLIENT_HPP
+#define INTER_PROCESS_COURIER_SYNCUNIXDOMAINCLIENT_HPP
 
-#include <string>
-
-/**
- * @file Version.hpp
- * @brief Utilities for versioning.
- */
-
+#include <boost/asio.hpp>
+#include <InterProcessCourier/Error.hpp>
+#include "UnixDomainProtocol.hpp"
+#include <expected>
 
 namespace ipcourier {
-/**
- * @brief Gets the version string of the InterProcessCourier library
- *
- * Returns the current version of the InterProcessCourier library at compile time.
- * The version follows semantic versioning (MAJOR.MINOR.PATCH) format.
- *
- * @return The library version string (e.g., "1.2.3")
- */
-std::string getLibraryVersion();
+enum class UnixDomainClientError {
+    UnknownError,
+    ConnectionFailed,
+    NotEnoughBytesReceived,
+    UnableToSendMessage,
+    UnableToReceiveMessage,
+};
+
+template <typename SuccessType>
+using UnixDomainClientResult = std::expected<SuccessType, Error<UnixDomainClientError> >;
+
+class SyncUnixDomainClient {
+public:
+    explicit SyncUnixDomainClient(boost::asio::io_context& io_context);
+
+    UnixDomainClientResult<void> connect(const std::string& addr);
+
+    void disconnect();
+
+    UnixDomainClientResult<void> sendMessage(const ProtocolMessage& message);
+
+    UnixDomainClientResult<ProtocolMessage> receiveMessage();
+
+    UnixDomainClientResult<ProtocolMessage> sendAndReceiveMessage(const ProtocolMessage& message);
+
+private:
+    boost::asio::local::stream_protocol::socket m_socket;
+};
 } // namespace ipcourier
 
-#endif  // INTER_PROCESS_COURIER_VERSION_HPP
+#endif  // INTER_PROCESS_COURIER_SYNCUNIXDOMAINCLIENT_HPP

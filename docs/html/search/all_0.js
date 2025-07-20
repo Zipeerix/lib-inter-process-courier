@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['getlibraryversion_0',['getLibraryVersion',['../namespaceipcourier.html#aa932a924c0c3eea2fd9dab998cabd55d',1,'ipcourier']]]
+  ['acceptmessage_0',['acceptMessage',['../classipcourier_1_1SyncServer.html#a374dca7364fbd03ff6eca9173e8c585a',1,'ipcourier::SyncServer']]]
 ];

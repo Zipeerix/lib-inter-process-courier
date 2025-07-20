@@ -1,5 +1,5 @@
 /***************************************************************************
- *  InterProcessCourier Copyright (C) 2025  Ziperix                        *
+*  InterProcessCourier Copyright (C) 2025  Ziperix                        *
  *                                                                         *
  *  This program is free software: you can redistribute it and/or modify   *
  *  it under the terms of the GNU General Public License as published by   *
@@ -15,27 +15,16 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef INTER_PROCESS_COURIER_VERSION_HPP
-#define INTER_PROCESS_COURIER_VERSION_HPP
+#ifndef INTER_PROCESS_COURIER_UNIX_DOMAIN_CLIENT_HPP
+#define INTER_PROCESS_COURIER_UNIX_DOMAIN_CLIENT_HPP
 
 #include <string>
 
-/**
- * @file Version.hpp
- * @brief Utilities for versioning.
- */
-
-
 namespace ipcourier {
-/**
- * @brief Gets the version string of the InterProcessCourier library
- *
- * Returns the current version of the InterProcessCourier library at compile time.
- * The version follows semantic versioning (MAJOR.MINOR.PATCH) format.
- *
- * @return The library version string (e.g., "1.2.3")
- */
-std::string getLibraryVersion();
-} // namespace ipcourier
+using ProtocolMessage = std::string;
+using ProtocolMessageBuffer = std::vector<char>;
 
-#endif  // INTER_PROCESS_COURIER_VERSION_HPP
+constexpr std::size_t k_payload_length_header_size = 4;
+}
+
+#endif //INTER_PROCESS_COURIER_UNIX_DOMAIN_CLIENT_HPP

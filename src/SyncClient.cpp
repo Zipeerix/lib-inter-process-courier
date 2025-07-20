@@ -15,22 +15,40 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef INTER_PROCESS_COURIER_MAIN_HEADER_HPP
-#define INTER_PROCESS_COURIER_MAIN_HEADER_HPP
-
-#include <InterProcessCourier/Version.hpp>
-#include <InterProcessCourier/ProtobufTools.hpp>
 #include <InterProcessCourier/SyncClient.hpp>
-#include <InterProcessCourier/SyncServer.hpp>
+#include "SyncUnixDomainClient.hpp"
 
-/**
- * @file InterProcessCourier.hpp
- * @brief Convenience header that includes all other headers from the library.
- */
-
-
-/// Base namespace of the library
 namespace ipcourier {
-};
+static boost::asio::io_context k_ctx{}; // TODO: GET RID OF THIS ASAP! THIS IS JUST FOR TESTING PROBABLY TAKE AS ARG
 
-#endif  // INTER_PROCESS_COURIER_MAIN_HEADER_HPP
+SyncClient::SyncClient(const std::string& socket_addr) : m_socket_addr(socket_addr) {
+    m_client = std::make_unique<SyncUnixDomainClient>(k_ctx);
+}
+
+SyncClient::~SyncClient() {
+}
+
+SyncClientResult<void> SyncClient::connect() const {
+    const auto connect_result = m_client->connect(m_socket_addr);
+    if (!connect_result.has_value()) {
+        return std::unexpected(Error(SyncClientError::UnableToConnectToServer, connect_result.error().message));
+    }
+
+    return {};
+}
+
+
+SyncClientResult<std::string> SyncClient::sendAndReceiveMessage(const SerializedProtoPayload& serialized) const {
+    const auto send_result = m_client->sendMessage(serialized);
+    if (!send_result.has_value()) {
+        return std::unexpected(Error(SyncClientError::UnableToSendMessage, send_result.error().message));
+    }
+
+    const auto receive_result = m_client->receiveMessage();
+    if (!receive_result.has_value()) {
+        return std::unexpected(Error(SyncClientError::UnableToReceiveMessage, receive_result.error().message));
+    }
+
+    return receive_result.value();
+}
+} // namespace ipcourier

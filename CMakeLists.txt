@@ -28,9 +28,22 @@ endif()
 
 project(InterProcessCourier LANGUAGES CXX)
 
+find_package(protobuf REQUIRED)
 find_package(Boost REQUIRED)
 
-add_library(InterProcessCourier src/Version.cpp)
+add_library(
+    InterProcessCourier
+    include/InterProcessCourier/Version.hpp
+    include/InterProcessCourier/SyncServer.hpp
+    include/InterProcessCourier/SyncClient.hpp
+    include/InterProcessCourier/ProtobufTools.hpp
+    include/InterProcessCourier/InterProcessCourier.hpp
+    src/Version.cpp
+    src/ProtobufTools.cpp
+    src/SyncServer.cpp
+    src/SyncClient.cpp
+    src/SyncUnixDomainClient.cpp
+    src/SyncUnixDomainServer.cpp)
 
 set_target_properties(
     InterProcessCourier
@@ -40,7 +53,7 @@ set_target_properties(
 target_compile_definitions(
     InterProcessCourier
     PRIVATE -DINTER_PROCESS_COURIER_LIB_VERSION="${INTER_PROCESS_COURIER_LIB_VERSION}")
-target_link_libraries(InterProcessCourier boost::boost)
+target_link_libraries(InterProcessCourier boost::boost protobuf::protobuf)
 target_include_directories(InterProcessCourier PRIVATE src)
 target_include_directories(InterProcessCourier PRIVATE include)
 

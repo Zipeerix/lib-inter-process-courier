@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['interprocesscourier_2ehpp_0',['InterProcessCourier.hpp',['../InterProcessCourier_8hpp.html',1,'']]],
-  ['ipcourier_1',['ipcourier',['../namespaceipcourier.html',1,'']]]
+  ['baseprototype_0',['BaseProtoType',['../namespaceipcourier.html#a8467e7342308cd44d8e84b501f971146',1,'ipcourier']]]
 ];

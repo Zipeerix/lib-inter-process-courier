@@ -21,6 +21,7 @@ Checks: "-*,
         -readability-magic-numbers,
         -cppcoreguidelines-prefer-member-initializer,
         -cppcoreguidelines-pro-type-reinterpret-cast
+        -misc-no-recursion
 "
 
 WarningsAsErrors: '*'

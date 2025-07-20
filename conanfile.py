@@ -28,6 +28,8 @@ class InterProcessCourier(ConanFile):
         "fPIC": True
     }
 
+    # TODO: add validation that C++23 is required to be available in compiler
+
     def config_options(self):
         if self.settings.os == "Windows":
             del self.options.fPIC
@@ -40,6 +42,7 @@ class InterProcessCourier(ConanFile):
         if not self.options.skip_docs:
             self.requires("doxygen/1.14.0")
 
+        self.requires("protobuf/5.27.0")
         self.requires("gtest/1.16.0")
         self.requires("boost/1.86.0")
 
