@@ -28,8 +28,6 @@ class InterProcessCourier(ConanFile):
         "fPIC": True
     }
 
-    # TODO: add validation that C++23 is required to be available in compiler
-
     def config_options(self):
         if self.settings.os == "Windows":
             del self.options.fPIC
@@ -71,16 +69,19 @@ class InterProcessCourier(ConanFile):
         cmake.configure()
         cmake.build()
 
+        if not self.options.skip_tests:
+            self.run("./InterProcessCourier_Tests")
+
     def package(self):
         dst = self.package_folder
         src = self.build_folder
 
         copy(self, pattern="*.hpp", dst=os.path.join(dst, "include"),
              src=os.path.join(src, "include"))
-        copy(self, pattern="*.a", dst=os.path.join(dst, "lib"), src=src)
-        copy(self, pattern="*.dylib", dst=os.path.join(dst, "lib"), src=src)
-        copy(self, pattern="*.so", dst=os.path.join(dst, "lib"), src=src)
-        copy(self, pattern="*.so.*", dst=os.path.join(dst, "lib"), src=src)
+        copy(self, pattern="libInterProcessCourier.a", dst=os.path.join(dst, "lib"), src=src)
+        copy(self, pattern="libInterProcessCourier.dylib", dst=os.path.join(dst, "lib"), src=src)
+        copy(self, pattern="libInterProcessCourier.so", dst=os.path.join(dst, "lib"), src=src)
+        copy(self, pattern="libInterProcessCourier.so.*", dst=os.path.join(dst, "lib"), src=src)
 
     def package_info(self):
         self.cpp_info.libs = collect_libs(self)

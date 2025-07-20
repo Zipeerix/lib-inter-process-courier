@@ -106,9 +106,25 @@ if (SKIP_TESTS)
     message("Skipping tests")
 else ()
     find_package(GTest REQUIRED)
-    add_executable(InterProcessCourier_Tests test/main.cpp test/Version.Tests.cpp)
 
-    target_link_libraries(InterProcessCourier_Tests PRIVATE InterProcessCourier gtest::gtest)
+    protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS test/proto/ProtoForTests.proto)
+    add_library(InterProcessCourier_InternalProtoForTests ${PROTO_SRCS} ${PROTO_HDRS})
+    target_link_libraries(InterProcessCourier_InternalProtoForTests PRIVATE protobuf::protobuf)
+    target_include_directories(
+            InterProcessCourier_InternalProtoForTests
+            PRIVATE
+            ${Protobuf_INCLUDE_DIRS}
+            ${CMAKE_CURRENT_BINARY_DIR}
+    )
+
+    add_executable(InterProcessCourier_Tests
+            test/main.cpp
+            test/Version.Tests.cpp
+            test/Error.Tests.cpp
+            test/ProtobufTools.Tests.cpp
+    )
+
+    target_link_libraries(InterProcessCourier_Tests PRIVATE InterProcessCourier InterProcessCourier_InternalProtoForTests gtest::gtest)
 
     set_target_properties(
             InterProcessCourier_Tests
@@ -121,6 +137,7 @@ else ()
 
     target_include_directories(InterProcessCourier_Tests PRIVATE src)
     target_include_directories(InterProcessCourier_Tests PRIVATE include)
+    target_include_directories(InterProcessCourier_Tests PRIVATE test/proto)
 endif ()
 
 if (SKIP_DOCS)

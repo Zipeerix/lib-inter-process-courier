@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package ipcourier.test_proto;
+
+message HelloWorld {
+  string message = 1;
+  int32 integer = 2;
+}
