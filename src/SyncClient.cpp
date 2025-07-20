@@ -16,13 +16,13 @@
  ***************************************************************************/
 
 #include <InterProcessCourier/SyncClient.hpp>
+#include <boost/asio.hpp>
 #include "SyncUnixDomainClient.hpp"
 
 namespace ipcourier {
-static boost::asio::io_context k_ctx{}; // TODO: GET RID OF THIS ASAP! THIS IS JUST FOR TESTING PROBABLY TAKE AS ARG
-
-SyncClient::SyncClient(const std::string& socket_addr) : m_socket_addr(socket_addr) {
-    m_client = std::make_unique<SyncUnixDomainClient>(k_ctx);
+SyncClient::SyncClient(boost::asio::io_context& io_context,
+                       const std::string& socket_addr) : m_socket_addr(socket_addr) {
+    m_client = std::make_unique<SyncUnixDomainClient>(io_context);
 }
 
 SyncClient::~SyncClient() {

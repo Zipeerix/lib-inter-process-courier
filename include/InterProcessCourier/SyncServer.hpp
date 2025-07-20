@@ -31,6 +31,7 @@
 #include <unordered_map>
 #include <string>
 #include <expected>
+#include <InterProcessCourier/ThirdPartyFwd.hpp>
 
 namespace ipcourier {
 /**
@@ -84,9 +85,10 @@ public:
     /**
      * @brief Constructs a SyncServer instance.
      *
+     * @param io_context Boost::Asio io_context, note that this is a synchronous server, so no async operation will run
      * @param socket_addr The path to the Unix Domain Socket file to bind to and listen on.
      */
-    explicit SyncServer(const std::string& socket_addr);
+    SyncServer(boost::asio::io_context& io_context, const std::string& socket_addr);
 
     ~SyncServer();
 

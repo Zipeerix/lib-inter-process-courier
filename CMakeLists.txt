@@ -38,6 +38,7 @@ add_library(
     include/InterProcessCourier/SyncClient.hpp
     include/InterProcessCourier/ProtobufTools.hpp
     include/InterProcessCourier/InterProcessCourier.hpp
+    include/InterProcessCourier/ThirdPartyFwd.hpp
     src/Version.cpp
     src/ProtobufTools.cpp
     src/SyncServer.cpp

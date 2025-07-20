@@ -26,6 +26,7 @@
 
 #include <InterProcessCourier/Error.hpp>
 #include <InterProcessCourier/ProtobufTools.hpp>
+#include <InterProcessCourier/ThirdPartyFwd.hpp>
 #include <memory>
 #include <string>
 #include <expected>
@@ -68,9 +69,10 @@ public:
     /**
      * @brief Constructs a SyncClient instance.
      *
+     * @param io_context Boost::Asio io_context, note that this is a synchronous client, so no async operation will run
      * @param socket_addr The path to the Unix Domain Socket file to connect to.
      */
-    explicit SyncClient(const std::string& socket_addr);
+    SyncClient(boost::asio::io_context& io_context, const std::string& socket_addr);
 
     ~SyncClient();
 

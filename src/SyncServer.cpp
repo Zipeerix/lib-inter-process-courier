@@ -16,13 +16,12 @@
  ***************************************************************************/
 
 #include <InterProcessCourier/SyncServer.hpp>
+#include <boost/asio.hpp>
 #include "SyncUnixDomainServer.hpp"
 
 namespace ipcourier {
-static boost::asio::io_context k_ctx{}; // TODO: GET RID OF THIS ASAP! THIS IS JUST FOR TESTING PROBABLY TAKE AS ARG
-
-SyncServer::SyncServer(const std::string& socket_addr) {
-    m_server = std::make_unique<SyncUnixDomainServer>(k_ctx,
+SyncServer::SyncServer(boost::asio::io_context& io_context, const std::string& socket_addr) {
+    m_server = std::make_unique<SyncUnixDomainServer>(io_context,
                                                       socket_addr,
                                                       [this](const ProtocolMessage& msg) {
                                                           // TODO: acceptMessage error handling should be expceton?

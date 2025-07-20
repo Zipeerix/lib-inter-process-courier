@@ -15,23 +15,17 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef INTER_PROCESS_COURIER_MAIN_HEADER_HPP
-#define INTER_PROCESS_COURIER_MAIN_HEADER_HPP
-
-#include <InterProcessCourier/Version.hpp>
-#include <InterProcessCourier/ProtobufTools.hpp>
-#include <InterProcessCourier/SyncClient.hpp>
-#include <InterProcessCourier/SyncServer.hpp>
-#include <InterProcessCourier/ThirdPartyFwd.hpp>
+#ifndef TINTER_PROCESS_COURIER_HIRDPARTYFWD_HPP
+#define TINTER_PROCESS_COURIER_HIRDPARTYFWD_HPP
 
 /**
- * @file InterProcessCourier.hpp
- * @brief Convenience header that includes all other headers from the library.
+ * @file ThirdPartyFwd.hpp
+ * @brief Forward declaration for types outside InterProcessCourier and standard library.
  */
 
 
-/// Base namespace of the library
-namespace ipcourier {
-};
+namespace boost::asio {
+struct io_context;
+} // namespace boost::asio
 
-#endif  // INTER_PROCESS_COURIER_MAIN_HEADER_HPP
+#endif //TINTER_PROCESS_COURIER_HIRDPARTYFWD_HPP
