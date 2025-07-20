@@ -44,7 +44,7 @@ class InterProcessCourier(ConanFile):
 
         self.requires("protobuf/5.27.0")
         self.requires("gtest/1.16.0")
-        self.requires("boost/1.86.0")
+        self.requires("boost/1.88.0")
 
     def generate(self):
         tc = CMakeToolchain(self)
