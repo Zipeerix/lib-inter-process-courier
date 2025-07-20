@@ -70,7 +70,7 @@ SyncServer::SyncServer(boost::asio::io_context& io_context, const std::string& s
 SyncServerResult<void> SyncServer::start() {
     const auto result = m_server->run();
     if (!result.has_value()) {
-        // TODO: erorr mapping? its BAD here
+        // TODO: erorr mapping? Remove runtime error altogether maybe
         return std::unexpected(Error(SyncServerError::RuntimeError, result.error().message));
     }
 
@@ -80,10 +80,12 @@ SyncServerResult<void> SyncServer::start() {
 SyncServer::~SyncServer() = default;
 
 SyncServerResult<SerializedProtoPayload> SyncServer::acceptMessage(const SerializedProtoPayload& serialized) {
-    const std::unique_ptr<BaseProtoType> msg = tryParseProtobuf(serialized);
-    if (!msg) {
-        return std::unexpected(Error(SyncServerError::UnableToDeserializeMessage));
+    const auto msg_result = makeBaseProtoFromPayload(serialized);
+    if (!msg_result.has_value()) {
+        return std::unexpected(Error(SyncServerError::UnableToDeserializeMessage, msg_result.error().message));
     }
+
+    const auto& msg = msg_result.value();
 
     const auto type_name = msg->GetDescriptor()->full_name();
     const auto it = m_handlers.find(type_name);
@@ -93,37 +95,6 @@ SyncServerResult<SerializedProtoPayload> SyncServer::acceptMessage(const Seriali
     }
 
     return it->second(*msg);
-}
-
-// TODO: Full rewrite or use ProtobufTools
-std::unique_ptr<BaseProtoType> SyncServer::tryParseProtobuf(const SerializedProtoPayload& serialized) const {
-    // TODO: I can use fn from ProtobufTools probably?
-    std::string type_name;
-    size_t sep = serialized.find(':');
-    if (sep == std::string::npos) {
-        return nullptr;
-    }
-
-    type_name = serialized.substr(0, sep);
-    std::string data = serialized.substr(sep + 1);
-
-    const auto* descriptor = google::protobuf::DescriptorPool::generated_pool()->FindMessageTypeByName(type_name);
-    if (!descriptor) {
-        return nullptr;
-    }
-
-    const BaseProtoType* prototype = google::protobuf::MessageFactory::generated_factory()->GetPrototype(descriptor);
-
-    if (!prototype) {
-        return nullptr;
-    }
-
-    auto msg = std::unique_ptr<BaseProtoType>(prototype->New());
-    if (!msg->ParseFromString(data)) {
-        return nullptr;
-    }
-
-    return msg;
 }
 } // namespace ipcourier
 

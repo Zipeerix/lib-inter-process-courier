@@ -164,6 +164,40 @@ ProtobufToolResult<ProtoType> makeProtoFromPayload(const SerializedProtoPayload&
 
     return message;
 }
+
+/**
+ * @brief Deserializes a payload string into a dynamically created Protocol Buffer message.
+ *
+ * Parses a payload string created by makePayloadFromProto() and reconstructs
+ * the original Protocol Buffer message, returning it as a unique pointer to
+ * a `google::protobuf::Message` (BaseProtoType). This function dynamically
+ * determines the message type from the payload's type information.
+ *
+ * @param payload The payload string containing type info and serialized data.
+ * @return ProtobufToolResult<std::unique_ptr<BaseProtoType>> Either the deserialized message
+ * or an error code indicating the failure reason.
+ * @retval std::unique_ptr<BaseProtoType> Successfully deserialized Protocol Buffer message.
+ * @retval InvalidFormat The payload string doesn't contain the expected delimiter.
+ * @retval DeserializationFailed The Protocol Buffer parsing failed, or the message
+ * descriptor/prototype could not be found for the given type name.
+ *
+ * @see makePayloadFromProto for the reverse operation
+ *
+ * @par Example:
+ * @code
+ * const SerializedProtoPayload payload = "my.package.MyMessage:some_binary_data";
+ * const auto result = ipcourier::makeBaseProtoFromPayload(payload);
+ * if (result) {
+ * std::unique_ptr<google::protobuf::Message> msg = *result;
+ * // You can now cast msg to the concrete type if known, or use reflection
+ * // to access its fields.
+ * // e.g., if (msg->GetDescriptor()->full_name() == "my.package.MyMessage") { ... }
+ * } else {
+ * // Handle result.error()
+ * }
+ * @endcode
+ */
+ProtobufToolResult<std::unique_ptr<BaseProtoType> > makeBaseProtoFromPayload(const SerializedProtoPayload& payload);
 } // namespace ipcourier
 
 #endif  // INTER_PROCESS_COURIER_PROTOBUF_TOOLS_HPP

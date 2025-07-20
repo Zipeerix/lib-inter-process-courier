@@ -146,8 +146,6 @@ private:
     std::unique_ptr<SyncUnixDomainServer> m_server;
 
     SyncServerResult<SerializedProtoPayload> acceptMessage(const SerializedProtoPayload& serialized);
-
-    std::unique_ptr<BaseProtoType> tryParseProtobuf(const SerializedProtoPayload& serialized) const;
 };
 } // namespace ipcourier
 

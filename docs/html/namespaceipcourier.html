@@ -178,6 +178,8 @@ Functions</h2></td></tr>
 <tr class="memitem:a6427e52a0951a9315a0e92ae778b3bac" id="r_a6427e52a0951a9315a0e92ae778b3bac"><td class="memTemplParams" colspan="2">template&lt;IsDerivedFromProtoMessage ProtoType&gt; </td></tr>
 <tr class="memitem:a6427e52a0951a9315a0e92ae778b3bac template"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a0c76265d3f1060a08c57b7b0a870f2f7">ProtobufToolResult</a>&lt; ProtoType &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6427e52a0951a9315a0e92ae778b3bac">makeProtoFromPayload</a> (const <a class="el" href="#a1189cec51d2fdcc0099e09d0f3e203f2">SerializedProtoPayload</a> &amp;payload)</td></tr>
 <tr class="memdesc:a6427e52a0951a9315a0e92ae778b3bac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deserializes a payload string back into a Protocol Buffer message.  <br /></td></tr>
+<tr class="memitem:ae31ddbbf91a196c75f58819c48ea5330" id="r_ae31ddbbf91a196c75f58819c48ea5330"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a0c76265d3f1060a08c57b7b0a870f2f7">ProtobufToolResult</a>&lt; std::unique_ptr&lt; <a class="el" href="#a8467e7342308cd44d8e84b501f971146">BaseProtoType</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae31ddbbf91a196c75f58819c48ea5330">makeBaseProtoFromPayload</a> (const <a class="el" href="#a1189cec51d2fdcc0099e09d0f3e203f2">SerializedProtoPayload</a> &amp;payload)</td></tr>
+<tr class="memdesc:ae31ddbbf91a196c75f58819c48ea5330"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deserializes a payload string into a dynamically created Protocol Buffer message.  <br /></td></tr>
 <tr class="memitem:a271e6bf9a2fb34c2cc0978614b932efa" id="r_a271e6bf9a2fb34c2cc0978614b932efa"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a271e6bf9a2fb34c2cc0978614b932efa">convertValidateRequestResponsePairStrategyToString</a> (<a class="el" href="#a8606c1db6c1243a07ed017baeb0c85fd">ValidateRequestResponsePairStrategy</a> strategy)</td></tr>
 <tr class="memdesc:a271e6bf9a2fb34c2cc0978614b932efa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a <span class="tt"><a class="el" href="#a8606c1db6c1243a07ed017baeb0c85fd" title="Defines strategies for validating the consistency of request and response Protocol Buffer message pai...">ValidateRequestResponsePairStrategy</a></span> enum value to its string representation.  <br /></td></tr>
 <tr class="memitem:aaa3c04c3a3fc6ccb63b30cac4bbb4df9" id="r_aaa3c04c3a3fc6ccb63b30cac4bbb4df9"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaa3c04c3a3fc6ccb63b30cac4bbb4df9">convertSyncServerErrorToString</a> (<a class="el" href="#a887d75cb647a50bc2e18847c2732c6e7">SyncServerError</a> error_type)</td></tr>
@@ -499,7 +501,7 @@ template&lt;typename SuccessType&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>String representation of the error type. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#a887d75cb647a50bc2e18847c2732c6e7" title="Enumeration of specific error codes for the synchronous server.">SyncServerError</a> </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="SyncServer_8hpp_source.html#l00160">std::formatter&lt; ipcourier::SyncServerError &gt;::format()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="SyncServer_8hpp_source.html#l00158">std::formatter&lt; ipcourier::SyncServerError &gt;::format()</a>.</p>
 
 </div>
 </div>
@@ -584,6 +586,55 @@ template&lt;typename SuccessType&gt; </div>
 <p>Gets the version string of the InterProcessCourier library. </p>
 <p>Returns the current version of the InterProcessCourier library at compile time. The version follows semantic versioning (MAJOR.MINOR.PATCH) format.</p>
 <dl class="section return"><dt>Returns</dt><dd>The library version string (e.g., "1.2.3") </dd></dl>
+
+</div>
+</div>
+<a id="ae31ddbbf91a196c75f58819c48ea5330" name="ae31ddbbf91a196c75f58819c48ea5330"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae31ddbbf91a196c75f58819c48ea5330">&#9670;&#160;</a></span>makeBaseProtoFromPayload()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a0c76265d3f1060a08c57b7b0a870f2f7">ProtobufToolResult</a>&lt; std::unique_ptr&lt; <a class="el" href="#a8467e7342308cd44d8e84b501f971146">BaseProtoType</a> &gt; &gt; ipcourier::makeBaseProtoFromPayload </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="#a1189cec51d2fdcc0099e09d0f3e203f2">SerializedProtoPayload</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>payload</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Deserializes a payload string into a dynamically created Protocol Buffer message. </p>
+<p>Parses a payload string created by <a class="el" href="#a1a21eafd91546337f1927613f6972467" title="Serializes a Protocol Buffer message into a payload string.">makePayloadFromProto()</a> and reconstructs the original Protocol Buffer message, returning it as a unique pointer to a <span class="tt">google::protobuf::Message</span> (<a class="el" href="#a8467e7342308cd44d8e84b501f971146" title="Type alias for a base type of all Protocol Buffer messages.">BaseProtoType</a>). This function dynamically determines the message type from the payload's type information.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">payload</td><td>The payload string containing type info and serialized data. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="#a0c76265d3f1060a08c57b7b0a870f2f7" title="Type alias for the result of Protocol Buffer tool operations.">ProtobufToolResult&lt;std::unique_ptr&lt;BaseProtoType&gt;&gt;</a> Either the deserialized message or an error code indicating the failure reason. </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">std::unique_ptr&lt;BaseProtoType&gt;</td><td>Successfully deserialized Protocol Buffer message. </td></tr>
+    <tr><td class="paramname">InvalidFormat</td><td>The payload string doesn't contain the expected delimiter. </td></tr>
+    <tr><td class="paramname">DeserializationFailed</td><td>The Protocol Buffer parsing failed, or the message descriptor/prototype could not be found for the given type name.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a1a21eafd91546337f1927613f6972467" title="Serializes a Protocol Buffer message into a payload string.">makePayloadFromProto</a> for the reverse operation</dd></dl>
+<dl class="section user"><dt>Example:</dt><dd><div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code hl_typedef" href="#a1189cec51d2fdcc0099e09d0f3e203f2">SerializedProtoPayload</a> payload = <span class="stringliteral">&quot;my.package.MyMessage:some_binary_data&quot;</span>;</div>
+<div class="line"><span class="keyword">const</span> <span class="keyword">auto</span> result = <a class="code hl_function" href="#ae31ddbbf91a196c75f58819c48ea5330">ipcourier::makeBaseProtoFromPayload</a>(payload);</div>
+<div class="line"><span class="keywordflow">if</span> (result) {</div>
+<div class="line">std::unique_ptr&lt;google::protobuf::Message&gt; msg = *result;</div>
+<div class="line"><span class="comment">// You can now cast msg to the concrete type if known, or use reflection</span></div>
+<div class="line"><span class="comment">// to access its fields.</span></div>
+<div class="line"><span class="comment">// e.g., if (msg-&gt;GetDescriptor()-&gt;full_name() == &quot;my.package.MyMessage&quot;) { ... }</span></div>
+<div class="line">} <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="comment">// Handle result.error()</span></div>
+<div class="line">}</div>
+<div class="ttc" id="anamespaceipcourier_html_a1189cec51d2fdcc0099e09d0f3e203f2"><div class="ttname"><a href="#a1189cec51d2fdcc0099e09d0f3e203f2">ipcourier::SerializedProtoPayload</a></div><div class="ttdeci">std::string SerializedProtoPayload</div><div class="ttdoc">Type alias for serialized protocol buffer payload.</div><div class="ttdef"><b>Definition</b> <a href="ProtobufTools_8hpp_source.html#l00071">ProtobufTools.hpp:71</a></div></div>
+<div class="ttc" id="anamespaceipcourier_html_ae31ddbbf91a196c75f58819c48ea5330"><div class="ttname"><a href="#ae31ddbbf91a196c75f58819c48ea5330">ipcourier::makeBaseProtoFromPayload</a></div><div class="ttdeci">ProtobufToolResult&lt; std::unique_ptr&lt; BaseProtoType &gt; &gt; makeBaseProtoFromPayload(const SerializedProtoPayload &amp;payload)</div><div class="ttdoc">Deserializes a payload string into a dynamically created Protocol Buffer message.</div></div>
+</div><!-- fragment --> </dd></dl>
 
 </div>
 </div>
@@ -685,7 +736,6 @@ template&lt;IsDerivedFromProtoMessage ProtoType&gt; </div>
 <div class="line">} <span class="keywordflow">else</span> {</div>
 <div class="line"><span class="comment">// Handle result.error()</span></div>
 <div class="line">}</div>
-<div class="ttc" id="anamespaceipcourier_html_a1189cec51d2fdcc0099e09d0f3e203f2"><div class="ttname"><a href="#a1189cec51d2fdcc0099e09d0f3e203f2">ipcourier::SerializedProtoPayload</a></div><div class="ttdeci">std::string SerializedProtoPayload</div><div class="ttdoc">Type alias for serialized protocol buffer payload.</div><div class="ttdef"><b>Definition</b> <a href="ProtobufTools_8hpp_source.html#l00071">ProtobufTools.hpp:71</a></div></div>
 <div class="ttc" id="anamespaceipcourier_html_a6427e52a0951a9315a0e92ae778b3bac"><div class="ttname"><a href="#a6427e52a0951a9315a0e92ae778b3bac">ipcourier::makeProtoFromPayload</a></div><div class="ttdeci">ProtobufToolResult&lt; ProtoType &gt; makeProtoFromPayload(const SerializedProtoPayload &amp;payload)</div><div class="ttdoc">Deserializes a payload string back into a Protocol Buffer message.</div><div class="ttdef"><b>Definition</b> <a href="ProtobufTools_8hpp_source.html#l00141">ProtobufTools.hpp:141</a></div></div>
 </div><!-- fragment --> </dd></dl>
 
