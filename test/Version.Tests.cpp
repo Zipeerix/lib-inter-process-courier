@@ -18,6 +18,6 @@
 #include <InterProcessCourier/Version.hpp>
 #include <gtest/gtest.h>
 
-TEST(Version, ReturnsCorrectVersion) {
+TEST(Version, getLibraryVersion_ReturnsCorrectVersion) {
     EXPECT_EQ(ipcourier::getLibraryVersion(), INTER_PROCESS_COURIER_LIB_VERSION);
 }
