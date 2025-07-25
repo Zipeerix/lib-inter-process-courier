@@ -57,7 +57,9 @@ done
 if [ "$CMAKE_FORMAT_AVAILABLE" = true ]; then
     if [ -f "CMakeLists.txt" ]; then
         echo -e "${GREEN}Formatting (cmake):${NC} CMakeLists.txt"
+        echo -e "${GREEN}Formatting (cmake):${NC} test_package/CMakeLists.txt"
         cmake-format -i "CMakeLists.txt"
+        cmake-format -i "test_package/CMakeLists.txt"
     else
         echo -e "${YELLOW}CMakeLists.txt not found in working directory${NC}"
     fi

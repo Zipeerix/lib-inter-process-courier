@@ -15,11 +15,9 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-syntax = "proto3";
+#include <InterProcessCourier/InterProcessCourier.hpp>
 
-package ipcourier.test_proto;
-
-message HelloWorld {
-  string message = 1;
-  int32 integer = 2;
+int main() {
+    std::cout << "InterProcessCourier library version: " << ipcourier::getLibraryVersion() << std::endl;
+    return 0;
 }
