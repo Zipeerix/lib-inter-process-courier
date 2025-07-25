@@ -15,26 +15,11 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-/**
- * @file Version.hpp
- * @brief Utilities for versioning.
- */
+#ifndef TINTER_PROCESS_COURIER_THIRDPARTYFWD_HPP
+#define TINTER_PROCESS_COURIER_THIRDPARTYFWD_HPP
 
-#ifndef INTER_PROCESS_COURIER_VERSION_HPP
-#define INTER_PROCESS_COURIER_VERSION_HPP
+namespace boost::asio {
+class io_context;
+}  // namespace boost::asio
 
-#include <string>
-
-namespace ipcourier {
-/**
- * @brief Gets the version string of the InterProcessCourier library
- *
- * Returns the current version of the InterProcessCourier library at compile time.
- * The version follows semantic versioning (MAJOR.MINOR.PATCH) format.
- *
- * @return The library version string (e.g., "1.2.3")
- */
-std::string getLibraryVersion();
-}  // namespace ipcourier
-
-#endif  // INTER_PROCESS_COURIER_VERSION_HPP
+#endif  // TINTER_PROCESS_COURIER_THIRDPARTYFWD_HPP

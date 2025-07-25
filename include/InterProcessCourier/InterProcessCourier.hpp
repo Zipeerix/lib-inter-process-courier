@@ -18,20 +18,17 @@
 #ifndef INTER_PROCESS_COURIER_MAIN_HEADER_HPP
 #define INTER_PROCESS_COURIER_MAIN_HEADER_HPP
 
-#include <InterProcessCourier/Version.hpp>
-#include <InterProcessCourier/ProtobufTools.hpp>
+#include <InterProcessCourier/ProtobufInterface.hpp>
 #include <InterProcessCourier/SyncClient.hpp>
 #include <InterProcessCourier/SyncServer.hpp>
-#include <InterProcessCourier/ThirdPartyFwd.hpp>
+#include <InterProcessCourier/Version.hpp>
 
 /**
  * @file InterProcessCourier.hpp
  * @brief Convenience header that includes all other headers from the library.
  */
 
-
 /// Base namespace of the library
-namespace ipcourier {
-};
+namespace ipcourier {};
 
 #endif  // INTER_PROCESS_COURIER_MAIN_HEADER_HPP

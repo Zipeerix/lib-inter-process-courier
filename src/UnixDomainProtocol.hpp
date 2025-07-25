@@ -1,5 +1,5 @@
 /***************************************************************************
-*  InterProcessCourier Copyright (C) 2025  Ziperix                        *
+ *  InterProcessCourier Copyright (C) 2025  Ziperix                        *
  *                                                                         *
  *  This program is free software: you can redistribute it and/or modify   *
  *  it under the terms of the GNU General Public License as published by   *
@@ -19,12 +19,13 @@
 #define INTER_PROCESS_COURIER_UNIX_DOMAIN_CLIENT_HPP
 
 #include <string>
+#include <vector>
 
-namespace ipcourier {
+namespace ipcourier::_detail {
 using ProtocolMessage = std::string;
 using ProtocolMessageBuffer = std::vector<char>;
 
 constexpr std::size_t k_payload_length_header_size = 4;
-}
+}  // namespace ipcourier::_detail
 
-#endif //INTER_PROCESS_COURIER_UNIX_DOMAIN_CLIENT_HPP
+#endif  // INTER_PROCESS_COURIER_UNIX_DOMAIN_CLIENT_HPP

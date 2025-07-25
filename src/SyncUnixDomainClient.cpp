@@ -17,8 +17,9 @@
 
 #include "SyncUnixDomainClient.hpp"
 
-namespace ipcourier {
-SyncUnixDomainClient::SyncUnixDomainClient(boost::asio::io_context& io_context) : m_socket(io_context) {
+namespace ipcourier::_detail {
+SyncUnixDomainClient::SyncUnixDomainClient(boost::asio::io_context& io_context) :
+    m_socket(io_context) {
 }
 
 UnixDomainClientResult<void> SyncUnixDomainClient::connect(const std::string& addr) {
@@ -57,8 +58,8 @@ UnixDomainClientResult<ProtocolMessage> SyncUnixDomainClient::receiveMessage() {
         ProtocolMessageBuffer message_length_header_reply_buffer;
         message_length_header_reply_buffer.resize(k_payload_length_header_size);
 
-        auto reply_length = m_socket.read_some(
-            boost::asio::buffer(message_length_header_reply_buffer, k_payload_length_header_size));
+        auto reply_length =
+            m_socket.read_some(boost::asio::buffer(message_length_header_reply_buffer, k_payload_length_header_size));
         if (reply_length != k_payload_length_header_size) {
             return std::unexpected(Error(UnixDomainClientError::NotEnoughBytesReceived));
         }
@@ -74,14 +75,14 @@ UnixDomainClientResult<ProtocolMessage> SyncUnixDomainClient::receiveMessage() {
             return std::unexpected(Error(UnixDomainClientError::NotEnoughBytesReceived));
         }
 
-        return ProtocolMessage(reply_buffer.begin(), reply_buffer.end());;
+        return ProtocolMessage(reply_buffer.begin(), reply_buffer.end());
+        ;
     } catch (std::exception& e) {
         return std::unexpected(Error(UnixDomainClientError::UnableToReceiveMessage, e.what()));
     }
 }
 
-UnixDomainClientResult<ProtocolMessage> SyncUnixDomainClient::sendAndReceiveMessage(
-    const ProtocolMessage& message) {
+UnixDomainClientResult<ProtocolMessage> SyncUnixDomainClient::sendAndReceiveMessage(const ProtocolMessage& message) {
     const auto send_result = sendMessage(message);
     if (!send_result.has_value()) {
         return std::unexpected(send_result.error());
@@ -89,4 +90,4 @@ UnixDomainClientResult<ProtocolMessage> SyncUnixDomainClient::sendAndReceiveMess
 
     return receiveMessage();
 }
-} // namespace ipcourier
+}  // namespace ipcourier::_detail

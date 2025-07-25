@@ -15,29 +15,19 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include <InterProcessCourier/SyncClient.hpp>
-#include <stdexcept>
-#include "InternalRequests.pb.h"
-#include <boost/asio.hpp>
 #include "SyncUnixDomainClient.hpp"
 
+#include <stdexcept>
+
+#include <InterProcessCourier/SyncClient.hpp>
+#include <boost/asio.hpp>
+
+#include "InternalRequests.pb.h"
+
 namespace ipcourier {
-std::string convertValidateRequestResponsePairStrategyToString(const ValidateRequestResponsePairStrategy strategy) {
-    switch (strategy) {
-        case ValidateRequestResponsePairStrategy::NoValidation:
-            return "No Validation";
-        case ValidateRequestResponsePairStrategy::ManualRegistration:
-            return "Manual Registration";
-        case ValidateRequestResponsePairStrategy::ServerReflection:
-            return "Server Reflection";
-    }
-
-    throw std::logic_error("Invalid ValidateRequestResponsePairStrategy given for conversion to string");
-}
-
-SyncClient::SyncClient(boost::asio::io_context& io_context,
-                       SyncClientOptions client_options) : m_client_options(std::move(client_options)) {
-    m_client = std::make_unique<SyncUnixDomainClient>(io_context);
+SyncClient::SyncClient(boost::asio::io_context& io_context, SyncClientOptions client_options) :
+    m_client_options(std::move(client_options)) {
+    m_client = std::make_unique<_detail::SyncUnixDomainClient>(io_context);
 }
 
 SyncClient::~SyncClient() = default;
@@ -64,11 +54,10 @@ SyncClientResult<void> SyncClient::reflectRequestResponseMappingPairs() {
 
     registerRequestResponsePair<MappingReflectionRequest, MappingReflectionResponse>();
 
-    const auto mapping_reflect_result = sendRequest<MappingReflectionRequest, MappingReflectionResponse>(
-        MappingReflectionRequest{});
+    const auto mapping_reflect_result =
+        sendRequest<MappingReflectionRequest, MappingReflectionResponse>(MappingReflectionRequest{});
     if (!mapping_reflect_result.has_value()) {
-        return std::unexpected(Error(SyncClientError::UnableToReflectMappings,
-                                     mapping_reflect_result.error().message));
+        return std::unexpected(Error(SyncClientError::UnableToReflectMappings, mapping_reflect_result.error().message));
     }
 
     const auto& mapping_reflect_response = mapping_reflect_result.value();
@@ -79,7 +68,8 @@ SyncClientResult<void> SyncClient::reflectRequestResponseMappingPairs() {
     return {};
 }
 
-SyncClientResult<std::string> SyncClient::sendAndReceiveMessage(const SerializedProtoPayload& serialized) const {
+SyncClientResult<_detail::SerializedProtoPayload> SyncClient::sendAndReceiveMessage(
+    const _detail::SerializedProtoPayload& serialized) const {
     const auto send_result = m_client->sendMessage(serialized);
     if (!send_result.has_value()) {
         return std::unexpected(Error(SyncClientError::UnableToSendMessage, send_result.error().message));
@@ -92,4 +82,4 @@ SyncClientResult<std::string> SyncClient::sendAndReceiveMessage(const Serialized
 
     return receive_result.value();
 }
-} // namespace ipcourier
+}  // namespace ipcourier

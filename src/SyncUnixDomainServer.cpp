@@ -16,16 +16,17 @@
  ***************************************************************************/
 
 #include "SyncUnixDomainServer.hpp"
-#include <thread>
-#include <stdexcept>
 
-namespace ipcourier {
+#include <stdexcept>
+#include <thread>
+
+namespace ipcourier::_detail {
 constexpr auto k_sync_server_loop_sleep_ms = std::chrono::milliseconds(100);
 
 SyncUnixDomainSession::SyncUnixDomainSession(boost::asio::local::stream_protocol::socket socket,
-                                             RequestHandler request_handler) : m_socket(std::move(socket)),
-                                                                               m_request_handler(
-                                                                                   std::move(request_handler)) {
+                                             RequestHandler request_handler) :
+    m_socket(std::move(socket)),
+    m_request_handler(std::move(request_handler)) {
 }
 
 UnixDomainServerResult<void> SyncUnixDomainSession::start() {
@@ -71,8 +72,7 @@ UnixDomainServerResult<std::uint32_t> SyncUnixDomainSession::readHeader() {
     return msg_length;
 }
 
-UnixDomainServerResult<ProtocolMessageBuffer> SyncUnixDomainSession::readBody(
-    const std::uint32_t msg_length) {
+UnixDomainServerResult<ProtocolMessageBuffer> SyncUnixDomainSession::readBody(const std::uint32_t msg_length) {
     ProtocolMessageBuffer message_buffer;
     message_buffer.resize(msg_length);
     const auto bytes_read = boost::asio::read(m_socket, boost::asio::buffer(message_buffer, msg_length));
@@ -94,8 +94,7 @@ UnixDomainServerResult<ProtocolMessageBuffer> SyncUnixDomainSession::readBody(
     return std::move(response_message_buffer);
 }
 
-UnixDomainServerResult<void> SyncUnixDomainSession::writeResponse(
-    const ProtocolMessageBuffer& response) {
+UnixDomainServerResult<void> SyncUnixDomainSession::writeResponse(const ProtocolMessageBuffer& response) {
     try {
         boost::asio::write(m_socket, boost::asio::buffer(response));
     } catch (std::exception& e) {
@@ -107,13 +106,11 @@ UnixDomainServerResult<void> SyncUnixDomainSession::writeResponse(
 
 SyncUnixDomainServer::SyncUnixDomainServer(boost::asio::io_context& io_context,
                                            const std::string& socket_path,
-                                           RequestHandler request_handler) : m_io_context(io_context),
-                                                                             m_acceptor(io_context,
-                                                                                 boost::asio::local::stream_protocol::endpoint(
-                                                                                     socket_path)),
-                                                                             m_request_handler(
-                                                                                 std::move(request_handler)),
-                                                                             m_socket_path(socket_path) {
+                                           RequestHandler request_handler) :
+    m_io_context(io_context),
+    m_acceptor(io_context, boost::asio::local::stream_protocol::endpoint(socket_path)),
+    m_request_handler(std::move(request_handler)),
+    m_socket_path(socket_path) {
 }
 
 UnixDomainServerResult<void> SyncUnixDomainServer::run() {
@@ -138,4 +135,4 @@ UnixDomainServerResult<void> SyncUnixDomainServer::run() {
         return std::unexpected(Error(UnixDomainServerError::GeneralServerError, e.what()));
     }
 }
-} // namespace ipcourier
+}  // namespace ipcourier::_detail

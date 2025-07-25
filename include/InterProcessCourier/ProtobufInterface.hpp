@@ -15,17 +15,30 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TINTER_PROCESS_COURIER_HIRDPARTYFWD_HPP
-#define TINTER_PROCESS_COURIER_HIRDPARTYFWD_HPP
-
 /**
- * @file ThirdPartyFwd.hpp
- * @brief Forward declaration for types outside InterProcessCourier and standard library.
+ * @file ProtobufInterface.hpp
+ * @brief Utilities for working with Protocol Buffers in InterProcessCourier.
  */
 
+#ifndef INTER_PROCESS_COURIER_PROTOBUF_INTERFACE_HPP
+#define INTER_PROCESS_COURIER_PROTOBUF_INTERFACE_HPP
 
-namespace boost::asio {
-struct io_context;
-} // namespace boost::asio
+#include <google/protobuf/Empty.pb.h>
+#include <google/protobuf/Message.h>
 
-#endif //TINTER_PROCESS_COURIER_HIRDPARTYFWD_HPP
+namespace ipcourier {
+/// Type alias for a base type of all Protocol Buffer messages
+using BaseProtoType = google::protobuf::Message;
+
+/// Type alias for an empty protobuf message
+using NoMessage = google::protobuf::Empty;
+
+/**
+ * @brief Concept to ensure template types derive from the Protocol Buffer Message base class.
+ * @tparam T The type to check
+ */
+template <typename T>
+concept IsDerivedFromProtoMessage = std::derived_from<T, BaseProtoType>;
+}  // namespace ipcourier
+
+#endif  // INTER_PROCESS_COURIER_PROTOBUF_INTERFACE_HPP

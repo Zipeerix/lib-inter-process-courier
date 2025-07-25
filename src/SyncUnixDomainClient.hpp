@@ -18,12 +18,14 @@
 #ifndef INTER_PROCESS_COURIER_SYNCUNIXDOMAINCLIENT_HPP
 #define INTER_PROCESS_COURIER_SYNCUNIXDOMAINCLIENT_HPP
 
-#include <boost/asio.hpp>
-#include <InterProcessCourier/Error.hpp>
 #include "UnixDomainProtocol.hpp"
+
 #include <expected>
 
-namespace ipcourier {
+#include <InterProcessCourier/Error.hpp>
+#include <boost/asio.hpp>
+
+namespace ipcourier::_detail {
 enum class UnixDomainClientError {
     UnknownError,
     ConnectionFailed,
@@ -52,6 +54,6 @@ public:
 private:
     boost::asio::local::stream_protocol::socket m_socket;
 };
-} // namespace ipcourier
+}  // namespace ipcourier::_detail
 
 #endif  // INTER_PROCESS_COURIER_SYNCUNIXDOMAINCLIENT_HPP

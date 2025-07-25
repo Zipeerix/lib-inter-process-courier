@@ -79,9 +79,16 @@ class InterProcessCourier(ConanFile):
         copy(self, pattern="*.hpp", dst=os.path.join(dst, "include"),
              src=os.path.join(src, "include"))
         copy(self, pattern="libInterProcessCourier.a", dst=os.path.join(dst, "lib"), src=src)
+        copy(self, pattern="libInterProcessCourier_InternalRequestsProto.a", dst=os.path.join(dst, "lib"), src=src)
+
         copy(self, pattern="libInterProcessCourier.dylib", dst=os.path.join(dst, "lib"), src=src)
+        copy(self, pattern="libInterProcessCourier_InternalRequestsProto.dylib", dst=os.path.join(dst, "lib"), src=src)
+
         copy(self, pattern="libInterProcessCourier.so", dst=os.path.join(dst, "lib"), src=src)
+        copy(self, pattern="libInterProcessCourier_InternalRequestsProto.so", dst=os.path.join(dst, "lib"), src=src)
+
         copy(self, pattern="libInterProcessCourier.so.*", dst=os.path.join(dst, "lib"), src=src)
+        copy(self, pattern="libInterProcessCourier_InternalRequestsProto.so.*", dst=os.path.join(dst, "lib"), src=src)
 
     def package_info(self):
         self.cpp_info.libs = collect_libs(self)

@@ -1,5 +1,5 @@
 /***************************************************************************
-* InterProcessCourier Copyright (C) 2025  Ziperix                        *
+ * InterProcessCourier Copyright (C) 2025  Ziperix                        *
  * *
  * This program is free software: you can redistribute it and/or modify   *
  * it under the terms of the GNU General Public License as published by   *
@@ -15,17 +15,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef INTER_PROCESS_COURIER_ERROR_HPP
-#define INTER_PROCESS_COURIER_ERROR_HPP
-
-#include <string>
-#include <type_traits>
-#include <format>
-
 /**
  * @file Error.hpp
  * @brief Utilities for error management.
  */
+
+#ifndef INTER_PROCESS_COURIER_ERROR_HPP
+#define INTER_PROCESS_COURIER_ERROR_HPP
+
+#include <format>
+#include <string>
+#include <type_traits>
 
 namespace ipcourier {
 /**
@@ -84,11 +84,12 @@ struct Error {
      * @param error_type The specific error type from the `ErrorType` enumeration.
      * @param error_message An optional string providing more details about the error.
      */
-    explicit Error(ErrorType error_type, std::string error_message = "")
-        : type(error_type), message(std::move(error_message)) {
+    explicit Error(ErrorType error_type, std::string error_message = "") :
+        type(error_type),
+        message(std::move(error_message)) {
     }
 };
-} // namespace ipcourier
+}  // namespace ipcourier
 
 template <ipcourier::IsEnum ErrorType>
 struct std::formatter<ipcourier::Error<ErrorType> > {
@@ -106,4 +107,4 @@ struct std::formatter<ipcourier::Error<ErrorType> > {
     }
 };
 
-#endif // INTER_PROCESS_COURIER_ERROR_HPP
+#endif  // INTER_PROCESS_COURIER_ERROR_HPP

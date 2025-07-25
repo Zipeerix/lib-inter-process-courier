@@ -18,15 +18,17 @@
 #ifndef INTER_PROCESS_COURIER_SYNCUNIXDOMAINSERVER_HPP
 #define INTER_PROCESS_COURIER_SYNCUNIXDOMAINSERVER_HPP
 
+#include "UnixDomainProtocol.hpp"
+
+#include <expected>
+#include <functional>
 #include <string>
 #include <vector>
-#include <functional>
-#include <boost/asio.hpp>
-#include "UnixDomainProtocol.hpp"
-#include <InterProcessCourier/Error.hpp>
-#include <expected>
 
-namespace ipcourier {
+#include <InterProcessCourier/Error.hpp>
+#include <boost/asio.hpp>
+
+namespace ipcourier::_detail {
 enum class UnixDomainServerError {
     UnknownError,
     NotEnoughBytesReceived,
@@ -71,6 +73,6 @@ private:
     RequestHandler m_request_handler;
     std::string m_socket_path;
 };
-} // namespace ipcourier
+}  // namespace ipcourier::_detail
 
 #endif  // INTER_PROCESS_COURIER_SYNCUNIXDOMAINSERVER_HPP

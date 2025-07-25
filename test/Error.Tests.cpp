@@ -15,11 +15,12 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include <gtest/gtest.h>
+#include <format>
 #include <string>
 #include <type_traits>
-#include <format>
+
 #include <InterProcessCourier/Error.hpp>
+#include <gtest/gtest.h>
 
 enum class TestErrorType {
     None,
@@ -67,7 +68,11 @@ TEST(Error, IsEnum_RecognizesEnumClass) {
 }
 
 TEST(Error, IsEnum_RecognizesPlainEnum) {
-    enum PlainEnum { Value1, Value2 };
+    enum PlainEnum {
+        Value1,
+        Value2
+    };
+
     ASSERT_TRUE(ipcourier::IsEnum<PlainEnum>);
 }
 
@@ -75,8 +80,9 @@ TEST(Error, IsEnum_RejectsNonEnumTypes) {
     ASSERT_FALSE(ipcourier::IsEnum<int>);
     ASSERT_FALSE(ipcourier::IsEnum<std::string>);
     ASSERT_FALSE(ipcourier::IsEnum<double>);
-    struct MyStruct {
-    };
+
+    struct MyStruct {};
+
     ASSERT_FALSE(ipcourier::IsEnum<MyStruct>);
 }
 

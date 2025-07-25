@@ -17,9 +17,9 @@
 
 #include <format>
 
-#include <InterProcessCourier/ProtobufTools.hpp>
+#include <InterProcessCourier/detail/ProtobufTools.hpp>
 
-namespace ipcourier {
+namespace ipcourier::_detail {
 SerializedProtoPayload createProtoPayload(const std::string_view type_name, const std::string_view serialized_data) {
     return std::format("{}:{}", type_name, serialized_data);
 }
@@ -28,9 +28,8 @@ ProtobufToolResult<std::unique_ptr<BaseProtoType> > makeBaseProtoFromPayload(con
     const auto delimiter_pos = payload.find(':');
     if (delimiter_pos == std::string::npos) {
         const auto message = payload.size() > 128 ? payload.substr(0, 128) + "..." : payload;
-        return std::unexpected(Error(ProtoPayloadParseError::InvalidFormat,
-                                     std::format("Received message: {}",
-                                                 message)));
+        return std::unexpected(
+            Error(ProtoPayloadParseError::InvalidFormat, std::format("Received message: {}", message)));
     }
 
     const auto type_name = payload.substr(0, delimiter_pos);
@@ -57,4 +56,4 @@ ProtobufToolResult<std::unique_ptr<BaseProtoType> > makeBaseProtoFromPayload(con
 
     return std::move(msg);
 }
-} // namespace ipcourier
+}  // namespace ipcourier::_detail

@@ -1,7 +1,7 @@
 var searchData=
 [
   ['connect_0',['connect',['../classipcourier_1_1SyncClient.html#a440471c06699ec129df3e61f3b457f2e',1,'ipcourier::SyncClient']]],
-  ['convertsyncservererrortostring_1',['convertSyncServerErrorToString',['../namespaceipcourier.html#aaa3c04c3a3fc6ccb63b30cac4bbb4df9',1,'ipcourier']]],
-  ['convertvalidaterequestresponsepairstrategytostring_2',['convertValidateRequestResponsePairStrategyToString',['../namespaceipcourier.html#a271e6bf9a2fb34c2cc0978614b932efa',1,'ipcourier']]],
-  ['createprotopayload_3',['createProtoPayload',['../namespaceipcourier.html#af776ebfdc36f4bd7833a73cd22efc244',1,'ipcourier']]]
+  ['convertstrategytostring_1',['convertStrategyToString',['../structstd_1_1formatter_3_01ipcourier_1_1ValidateRequestResponsePairStrategy_01_4.html#a3c2ff96145d27fb759a7c4b3ad85ca92',1,'std::formatter&lt; ipcourier::ValidateRequestResponsePairStrategy &gt;']]],
+  ['convertsyncservererrortostring_2',['convertSyncServerErrorToString',['../structstd_1_1formatter_3_01ipcourier_1_1SyncServerError_01_4.html#a906b0984fb797d2bb93f21adefb02921',1,'std::formatter&lt; ipcourier::SyncServerError &gt;']]],
+  ['createprotopayload_3',['createProtoPayload',['../namespaceipcourier_1_1__detail.html#aef189820fd182ca20a5945e9d146d6bb',1,'ipcourier::_detail']]]
 ];
