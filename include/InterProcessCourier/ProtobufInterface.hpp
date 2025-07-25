@@ -23,8 +23,8 @@
 #ifndef INTER_PROCESS_COURIER_PROTOBUF_INTERFACE_HPP
 #define INTER_PROCESS_COURIER_PROTOBUF_INTERFACE_HPP
 
-#include <google/protobuf/Empty.pb.h>
 #include <google/protobuf/Message.h>
+#include <google/protobuf/empty.pb.h>
 
 namespace ipcourier {
 /// Type alias for a base type of all Protocol Buffer messages
