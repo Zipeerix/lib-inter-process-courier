@@ -68,8 +68,6 @@ using SyncServerResult = std::expected<SuccessType, Error<SyncServerError> >;
  * and sending Protocol Buffer responses.
  */
 class SyncServer {
-    using GenericHandler = std::function<std::string(const BaseProtoType&)>;
-
 public:
     /**
      * @brief Type alias for a specific handler function for a given request and response type.
@@ -133,6 +131,8 @@ public:
     SyncServerResult<void> start();
 
 private:
+    using GenericHandler = std::function<std::string(const BaseProtoType&)>;
+
     std::unordered_map<std::string, GenericHandler> m_handlers;
     std::unordered_map<std::string, std::string> m_request_response_pairs;
     std::unique_ptr<_detail::SyncUnixDomainServer> m_server;
