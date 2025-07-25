@@ -23,7 +23,7 @@
 #ifndef INTER_PROCESS_COURIER_PROTOBUF_INTERFACE_HPP
 #define INTER_PROCESS_COURIER_PROTOBUF_INTERFACE_HPP
 
-#include <google/protobuf/Message.h>
+#include <google/protobuf/message.h>
 #include <google/protobuf/empty.pb.h>
 
 namespace ipcourier {
@@ -39,6 +39,6 @@ using NoMessage = google::protobuf::Empty;
  */
 template <typename T>
 concept IsDerivedFromProtoMessage = std::derived_from<T, BaseProtoType>;
-}  // namespace ipcourier
+} // namespace ipcourier
 
 #endif  // INTER_PROCESS_COURIER_PROTOBUF_INTERFACE_HPP
