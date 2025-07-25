@@ -84,16 +84,15 @@ struct Error {
      * @param error_type The specific error type from the `ErrorType` enumeration.
      * @param error_message An optional string providing more details about the error.
      */
-    explicit Error(ErrorType error_type, std::string error_message = "") :
-        type(error_type),
-        message(std::move(error_message)) {
+    explicit Error(ErrorType error_type, std::string error_message = "") : type(error_type),
+                                                                           message(std::move(error_message)) {
     }
 };
-}  // namespace ipcourier
+} // namespace ipcourier
 
 template <ipcourier::IsEnum ErrorType>
 struct std::formatter<ipcourier::Error<ErrorType> > {
-    static constexpr auto parse(std::format_parse_context& ctx) {
+    static constexpr auto parse(const std::format_parse_context& ctx) {
         return ctx.begin();
     }
 
