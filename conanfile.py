@@ -12,6 +12,7 @@ class InterProcessCourier(ConanFile):
     generators = "CMakeDeps"
     exports_sources = "CMakeLists.txt", "src/*", "include/*", "test/*", "proto/InternalRequests.proto", "Doxyfile.in"
     options = {
+        "protocol": ["protobuf"],
         "skip_static_analysis": [True, False],
         "skip_compiler_flags": [True, False],
         "skip_tests": [True, False],
@@ -20,6 +21,7 @@ class InterProcessCourier(ConanFile):
         "fPIC": [True, False]
     }
     default_options = {
+        "protocol": "protobuf",
         "skip_static_analysis": False,
         "skip_compiler_flags": False,
         "skip_tests": False,
@@ -57,6 +59,7 @@ class InterProcessCourier(ConanFile):
     def build(self):
         print("******* InterProcessCourier build *******")
         print(f"- Version: {self.version}")
+        print(f"- Protocol: {self.options.protocol}")
         print(f"- Skipping static analysis: {self.options.skip_static_analysis}")
         print(f"- Skipping compiler flags: {self.options.skip_compiler_flags}")
         print(f"- Skipping tests: {self.options.skip_tests}")
