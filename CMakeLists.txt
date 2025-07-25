@@ -22,7 +22,13 @@ cmake_minimum_required(VERSION 3.20)
 if(NOT DEFINED INTER_PROCESS_COURIER_LIB_VERSION)
     message(
         FATAL_ERROR
-            "INTER_PROCESS_COURIER_LIB_VERSION is required! Please provide it with -DVERSION_ARG=x.y.z"
+            "INTER_PROCESS_COURIER_LIB_VERSION is required! Please provide it with -INTER_PROCESS_COURIER_LIB_VERSION=x.y.z"
+    )
+endif()
+if(NOT DEFINED INTER_PROCESS_COURIER_PROTOCOL)
+    message(
+        FATAL_ERROR
+            "INTER_PROCESS_COURIER_PROTOCOL is required! Please provide it with -DINTER_PROCESS_COURIER_PROTOCOL=protocol"
     )
 endif()
 
@@ -40,7 +46,7 @@ target_include_directories(InterProcessCourier_InternalRequestsProto
 add_library(
     InterProcessCourier
     include/InterProcessCourier/InterProcessCourier.hpp
-    include/InterProcessCourier/Version.hpp
+    include/InterProcessCourier/Metadata.hpp
     include/InterProcessCourier/ProtobufInterface.hpp
     include/InterProcessCourier/SyncServer.hpp
     include/InterProcessCourier/SyncClient.hpp
@@ -50,7 +56,7 @@ add_library(
     include/InterProcessCourier/detail/ThirdPartyFwd.hpp
     include/InterProcessCourier/detail/DuplicateRegistrationHandler.hpp
     src/DuplicateRegistrationHandler.cpp
-    src/Version.cpp
+    src/Metadata.cpp
     src/ProtobufTools.cpp
     src/SyncServer.cpp
     src/SyncClient.cpp
@@ -64,7 +70,8 @@ set_target_properties(
                CXX_EXTENSIONS OFF)
 target_compile_definitions(
     InterProcessCourier
-    PRIVATE -DINTER_PROCESS_COURIER_LIB_VERSION="${INTER_PROCESS_COURIER_LIB_VERSION}")
+    PRIVATE -DINTER_PROCESS_COURIER_LIB_VERSION="${INTER_PROCESS_COURIER_LIB_VERSION}"
+            -DINTER_PROCESS_COURIER_PROTOCOL="${INTER_PROCESS_COURIER_PROTOCOL}")
 target_link_libraries(
     InterProcessCourier
     InterProcessCourier_InternalRequestsProto
@@ -122,7 +129,7 @@ else()
         InterProcessCourier_Tests
         test/main.cpp
         test/MainHeader.Tests.cpp
-        test/Version.Tests.cpp
+        test/Metadata.Tests.cpp
         test/Error.Tests.cpp
         test/ProtobufTools.Tests.cpp)
 

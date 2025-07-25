@@ -18,11 +18,11 @@
 #ifndef INTER_PROCESS_COURIER_MAIN_HEADER_HPP
 #define INTER_PROCESS_COURIER_MAIN_HEADER_HPP
 
+#include <InterProcessCourier/Metadata.hpp>
 #include <InterProcessCourier/ProtobufInterface.hpp>
 #include <InterProcessCourier/SyncClient.hpp>
 #include <InterProcessCourier/SyncCommons.hpp>
 #include <InterProcessCourier/SyncServer.hpp>
-#include <InterProcessCourier/Version.hpp>
 
 /**
  * @file InterProcessCourier.hpp

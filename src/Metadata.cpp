@@ -15,26 +15,19 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-/**
- * @file Version.hpp
- * @brief Utilities for versioning.
- */
-
-#ifndef INTER_PROCESS_COURIER_VERSION_HPP
-#define INTER_PROCESS_COURIER_VERSION_HPP
-
-#include <string>
+#include <InterProcessCourier/Metadata.hpp>
 
 namespace ipcourier {
-/**
- * @brief Gets the version string of the InterProcessCourier library
- *
- * Returns the current version of the InterProcessCourier library at compile time.
- * The version follows semantic versioning (MAJOR.MINOR.PATCH) format.
- *
- * @return The library version string (e.g., "1.2.3")
- */
-std::string getLibraryVersion();
-}  // namespace ipcourier
+CommunicationProtocol getProtocol() {
+    const std::string protocol = INTER_PROCESS_COURIER_PROTOCOL;
+    if (protocol == "protobuf") {
+        return CommunicationProtocol::Protobuf;
+    }
 
-#endif  // INTER_PROCESS_COURIER_VERSION_HPP
+    throw CommunicationProtocol::Protobuf;
+}
+
+std::string getLibraryVersion() {
+    return INTER_PROCESS_COURIER_LIB_VERSION;
+}
+}  // namespace ipcourier

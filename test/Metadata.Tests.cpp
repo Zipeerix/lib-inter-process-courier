@@ -15,10 +15,9 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include <InterProcessCourier/Version.hpp>
+#include <InterProcessCourier/Metadata.hpp>
+#include <gtest/gtest.h>
 
-namespace ipcourier {
-std::string getLibraryVersion() {
-    return INTER_PROCESS_COURIER_LIB_VERSION;
+TEST(Metadata, getLibraryVersion_ReturnsCorrectVersion) {
+    EXPECT_EQ(ipcourier::getLibraryVersion(), INTER_PROCESS_COURIER_LIB_VERSION);
 }
-}  // namespace ipcourier

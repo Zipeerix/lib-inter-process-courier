@@ -52,8 +52,10 @@ class InterProcessCourier(ConanFile):
         tc.cache_variables["SKIP_COMPILER_FLAGS"] = self.options.skip_compiler_flags
         tc.cache_variables["SKIP_TESTS"] = self.options.skip_tests
         tc.cache_variables["SKIP_DOCS"] = self.options.skip_docs
+        
         tc.cache_variables["INTER_PROCESS_COURIER_LIB_VERSION"] = self.version
-        tc.variables["INTER_PROCESS_COURIER_LIB_VERSION"] = self.version
+        tc.cache_variables["INTER_PROCESS_COURIER_PROTOCOL"] = self.options.protocol
+
         tc.generate()
 
     def build(self):
