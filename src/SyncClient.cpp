@@ -52,8 +52,8 @@ SyncClientResult<void> SyncClient::connect() {
 }
 
 SyncClientResult<void> SyncClient::reflectRequestResponseMappingPairs() {
-    using MappingReflectionRequest = internal_request_proto::GetRequestResponseMappingPairsRequest;
-    using MappingReflectionResponse = internal_request_proto::GetRequestResponseMappingPairsResponse;
+    using MappingReflectionRequest = internal_request_proto::IPCInternal_GetRequestResponseMappingPairsRequest;
+    using MappingReflectionResponse = internal_request_proto::IPCInternal_GetRequestResponseMappingPairsResponse;
 
     registerRequestResponsePair<MappingReflectionRequest, MappingReflectionResponse>();
 

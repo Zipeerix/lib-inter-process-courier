@@ -36,9 +36,12 @@ SyncServer::SyncServer(std::string socket_addr, SyncServerOptions server_options
 
             return accept_result.value();
         });
-    registerHandler<internal_request_proto::GetRequestResponseMappingPairsRequest,
-                    internal_request_proto::GetRequestResponseMappingPairsResponse>([this](const auto&) {
-        internal_request_proto::GetRequestResponseMappingPairsResponse response;
+
+    using MappingReflectionRequest = internal_request_proto::IPCInternal_GetRequestResponseMappingPairsRequest;
+    using MappingReflectionResponse = internal_request_proto::IPCInternal_GetRequestResponseMappingPairsResponse;
+
+    registerHandler<MappingReflectionRequest, MappingReflectionResponse>([this](const auto&) {
+        MappingReflectionResponse response;
 
         auto* proto_map = response.mutable_mappings();
         for (const auto& [request_name, response_name] : m_request_response_pairs) {
