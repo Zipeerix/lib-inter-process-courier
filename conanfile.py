@@ -5,12 +5,22 @@ from conan.tools.files import copy, collect_libs
 
 from conan import ConanFile
 
+required_conan_version = ">=2.0"
+
 
 class InterProcessCourier(ConanFile):
     name = "lib-inter-process-courier"
+    description = "Modern library for client-to-daemon inter-process communication."
+    url = "https://github.com/Zipeerix/lib-inter-process-courier"
+    homepage = "https://zipeerix.github.io/lib-inter-process-courier/html/"
+    author = "Zipeerix (ziperix@icloud.com)"
+    license = "GPL-3.0"
     settings = "os", "compiler", "build_type", "arch"
     generators = "CMakeDeps"
     exports_sources = "CMakeLists.txt", "src/*", "include/*", "test/*", "proto/InternalRequests.proto", "Doxyfile.in"
+    package_type = "library"
+    build_policy = "missing"
+    languages = "C++"
     options = {
         "protocol": ["protobuf"],
         "skip_static_analysis": [True, False],
@@ -29,21 +39,34 @@ class InterProcessCourier(ConanFile):
         "shared": False,
         "fPIC": True
     }
+    options_description = {
+        "protocol": "Defines the protocol used for inter-process communication. Currently only 'protobuf' is supported.",
+        "skip_static_analysis": "Skip static analysis checks during the build process.",
+        "skip_compiler_flags": "Skip applying custom compiler flags.",
+        "skip_tests": "Skip building and running tests.",
+        "skip_docs": "Skip building documentation.",
+        "shared": "Build shared libraries instead of static libraries.",
+        "fPIC": "Position-independent code for shared libraries on Unix-like systems."
+    }
 
     def config_options(self):
         if self.settings.os == "Windows":
-            del self.options.fPIC
+            self.options.rm_safe("fPIC")
 
     def build_requirements(self):
         if not self.options.skip_docs:
             self.tool_requires("doxygen/<host_version>")
 
+        self.tool_requires("protobuf/<host_version>")
+
     def requirements(self):
         if not self.options.skip_docs:
             self.requires("doxygen/1.14.0")
 
+        if not self.options.skip_tests:
+            self.requires("gtest/1.16.0")
+
         self.requires("protobuf/5.27.0")
-        self.requires("gtest/1.16.0")
         self.requires("boost/1.88.0")
 
     def generate(self):
@@ -52,7 +75,7 @@ class InterProcessCourier(ConanFile):
         tc.cache_variables["SKIP_COMPILER_FLAGS"] = self.options.skip_compiler_flags
         tc.cache_variables["SKIP_TESTS"] = self.options.skip_tests
         tc.cache_variables["SKIP_DOCS"] = self.options.skip_docs
-        
+
         tc.cache_variables["INTER_PROCESS_COURIER_LIB_VERSION"] = self.version
         tc.cache_variables["INTER_PROCESS_COURIER_PROTOCOL"] = self.options.protocol
 
@@ -83,17 +106,10 @@ class InterProcessCourier(ConanFile):
 
         copy(self, pattern="*.hpp", dst=os.path.join(dst, "include"),
              src=os.path.join(src, "include"))
-        copy(self, pattern="libInterProcessCourier.a", dst=os.path.join(dst, "lib"), src=src)
-        copy(self, pattern="libInterProcessCourier_InternalRequestsProto.a", dst=os.path.join(dst, "lib"), src=src)
 
-        copy(self, pattern="libInterProcessCourier.dylib", dst=os.path.join(dst, "lib"), src=src)
-        copy(self, pattern="libInterProcessCourier_InternalRequestsProto.dylib", dst=os.path.join(dst, "lib"), src=src)
-
-        copy(self, pattern="libInterProcessCourier.so", dst=os.path.join(dst, "lib"), src=src)
-        copy(self, pattern="libInterProcessCourier_InternalRequestsProto.so", dst=os.path.join(dst, "lib"), src=src)
-
-        copy(self, pattern="libInterProcessCourier.so.*", dst=os.path.join(dst, "lib"), src=src)
-        copy(self, pattern="libInterProcessCourier_InternalRequestsProto.so.*", dst=os.path.join(dst, "lib"), src=src)
+        for lib_name in ["InterProcessCourier", "InterProcessCourier_InternalRequestsProto"]:
+            for extension in ["a", "dylib", "so", ".dll", "so.*"]:
+                copy(self, pattern=f"lib{lib_name}.{extension}", dst=os.path.join(dst, "lib"), src=src)
 
     def package_info(self):
         self.cpp_info.libs = collect_libs(self)
