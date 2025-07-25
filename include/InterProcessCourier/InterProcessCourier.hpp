@@ -20,6 +20,7 @@
 
 #include <InterProcessCourier/ProtobufInterface.hpp>
 #include <InterProcessCourier/SyncClient.hpp>
+#include <InterProcessCourier/SyncCommons.hpp>
 #include <InterProcessCourier/SyncServer.hpp>
 #include <InterProcessCourier/Version.hpp>
 

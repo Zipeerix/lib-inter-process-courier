@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['error_0',['Error',['../structipcourier_1_1Error.html',1,'ipcourier::Error&lt; ErrorType &gt;'],['../structipcourier_1_1Error.html#ae9e5d666ef5c9b25ca797916a4434550',1,'ipcourier::Error::Error()=default'],['../structipcourier_1_1Error.html#a97a8519acadbd6cc0bb407c6a9ff15a1',1,'ipcourier::Error::Error(ErrorType error_type, std::string error_message=&quot;&quot;)']]],
-  ['error_2ehpp_1',['Error.hpp',['../Error_8hpp.html',1,'']]]
+  ['duplicate_5fregistration_5fstrategy_0',['duplicate_registration_strategy',['../structipcourier_1_1SyncClientOptions.html#a724af54bed707c89076ad8c3535e7dce',1,'ipcourier::SyncClientOptions::duplicate_registration_strategy'],['../structipcourier_1_1SyncServerOptions.html#a2b140e4fe002b590bcdf96bd217a4306',1,'ipcourier::SyncServerOptions::duplicate_registration_strategy']]],
+  ['duplicaterequestresponsepairregistrationstrategy_1',['DuplicateRequestResponsePairRegistrationStrategy',['../namespaceipcourier.html#af1bd3b0df74bafc8973362f4a324d8f8',1,'ipcourier']]]
 ];

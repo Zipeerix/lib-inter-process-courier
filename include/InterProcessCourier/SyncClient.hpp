@@ -29,6 +29,7 @@
 #include <string>
 
 #include <InterProcessCourier/Error.hpp>
+#include <InterProcessCourier/SyncCommons.hpp>
 #include <InterProcessCourier/detail/DetailFwd.hpp>
 #include <InterProcessCourier/detail/ProtobufTools.hpp>
 #include <InterProcessCourier/detail/ThirdPartyFwd.hpp>
@@ -73,13 +74,9 @@ enum class ValidateRequestResponsePairStrategy {
 
 /**
  * @brief Structure to hold various configuration options for the SyncClient.
+ * @see SyncClient
  */
 struct SyncClientOptions {
-    /**
-     * @brief The path to the Unix Domain Socket file the client should connect to.
-     */
-    std::string socket_addr;
-
     /**
      * @brief Specifies the strategy for validating request-response pairs during communication.
      * This ensures that the client's outgoing requests and incoming responses adhere to
@@ -88,6 +85,20 @@ struct SyncClientOptions {
      */
     ValidateRequestResponsePairStrategy validate_req_res_pair_strategy =
         ValidateRequestResponsePairStrategy::ServerReflection;
+
+    /**
+     * @brief Strategy for handling duplicate request/response pair registrations.
+     *
+     * This option determines what the registration functions returns when a handler is registered
+     * for a request type that already has a registered handler.
+     *
+     * Has no impact if SyncClientOptions::validate_req_res_pair_strategy is set to
+     * ValidateRequestResponsePairStrategy::ServerReflection
+     *
+     * @see DuplicateRequestResponsePairRegistrationStrategy
+     */
+    DuplicateRequestResponsePairRegistrationStrategy duplicate_registration_strategy =
+        DuplicateRequestResponsePairRegistrationStrategy::IndicateIgnore;
 };
 
 /**
@@ -103,10 +114,10 @@ public:
     /**
      * @brief Constructs a SyncClient instance.
      *
-     * @param io_context Boost::Asio io_context, note that this is a synchronous client, so no async operation will run
+     * @param socket_addr The path to the Unix Domain Socket file on which the server listens.
      * @param client_options Various settings relating to the client. @see SyncClientOptions
      */
-    SyncClient(boost::asio::io_context& io_context, SyncClientOptions client_options);
+    SyncClient(std::string socket_addr, SyncClientOptions client_options);
 
     ~SyncClient();
 
@@ -126,20 +137,29 @@ public:
      * is enabled via `SyncClientOptions::validate_req_res_pair`, calling `sendRequest` with a
      * `RequestType` that has an unexpected `ResponseType` (i.e., not registered here) will result in an error,
      * preventing the request from being sent. This helps ensure type safety and correctness in inter-process
-     * communication. If a `RequestType` was previously registered to a different ` ResponseType `, then it will be
-     * overwritten.
+     * communication.
+     *
+     * \warning What this function returns depends on the `SyncClientOptions::duplicate_registration_strategy` setting.
      *
      * @tparam RequestType The Protocol Buffer message type that represents the request.
      * Must derive from `google::protobuf::Message`.
      * @tparam ResponseType The Protocol Buffer message type that represents the expected response for `RequestType`.
      * Must derive from `google::protobuf::Message`.
+     *  @returns Boolean value, what it indicated depends on the `SyncClientOptions::duplicate_registration_strategy`
+     * setting.
      */
     template <IsDerivedFromProtoMessage RequestType, IsDerivedFromProtoMessage ResponseType>
-    void registerRequestResponsePair() {
+    bool registerRequestResponsePair() {
         const auto request_name = RequestType::descriptor()->full_name();
         const auto response_name = ResponseType::descriptor()->full_name();
 
-        m_request_response_pairs[request_name] = response_name;
+        if (m_request_response_pairs.contains(request_name) &&
+            m_client_options.validate_req_res_pair_strategy != ValidateRequestResponsePairStrategy::ServerReflection) {
+            return registerDuplicateRequestResponsePair(request_name, response_name);
+        }
+
+        registerValidatedRequestResponsePair(request_name, response_name);
+        return true;
     }
 
     /**
@@ -205,9 +225,16 @@ public:
 
 private:
     SyncClientOptions m_client_options;
+    std::string m_socket_addr;
+    std::unique_ptr<boost::asio::io_context> m_io_context;
+
     std::unique_ptr<_detail::SyncUnixDomainClient> m_client;
 
     std::unordered_map<std::string, std::string> m_request_response_pairs;
+
+    bool registerDuplicateRequestResponsePair(const std::string& request_name, const std::string& response_name);
+
+    void registerValidatedRequestResponsePair(const std::string& request_name, const std::string& response_name);
 
     SyncClientResult<_detail::SerializedProtoPayload> sendAndReceiveMessage(
         const _detail::SerializedProtoPayload& serialized) const;

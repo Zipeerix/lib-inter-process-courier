@@ -23,10 +23,12 @@
 #include "InternalRequests.pb.h"
 
 namespace ipcourier {
-SyncServer::SyncServer(boost::asio::io_context& io_context, const std::string& socket_addr) {
+SyncServer::SyncServer(std::string socket_addr, SyncServerOptions server_options) :
+    m_server_options(std::move(server_options)), m_socket_addr(std::move(socket_addr)),
+    m_io_context(std::make_unique<boost::asio::io_context>()) {
     m_server = std::make_unique<_detail::SyncUnixDomainServer>(
-        io_context, socket_addr, [this](const _detail::ProtocolMessage& msg) {
-            // TODO: acceptMessage error handling should be expceton?
+        *m_io_context, m_socket_addr, [this](const _detail::ProtocolMessage& msg) {
+            // TODO: acceptMessage error handling should be exception?
             const auto accept_result = acceptMessage(msg);
             if (!accept_result.has_value()) {
                 throw std::runtime_error(std::format("Error while accepting message: {}", accept_result.error()));
@@ -47,7 +49,7 @@ SyncServer::SyncServer(boost::asio::io_context& io_context, const std::string& s
     });
 }
 
-SyncServerResult<void> SyncServer::start() {
+SyncServerResult<void> SyncServer::start() const {
     const auto result = m_server->run();
     if (!result.has_value()) {
         // TODO: erorr mapping? Remove runtime error altogether maybe

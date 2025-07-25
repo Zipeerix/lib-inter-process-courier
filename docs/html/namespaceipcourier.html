@@ -107,6 +107,8 @@ Data Structures</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure to hold various configuration options for the <a class="el" href="classipcourier_1_1SyncClient.html" title="A synchronous client for inter-process communication using Protocol Buffers over Unix Domain Sockets.">SyncClient</a>.  <a href="structipcourier_1_1SyncClientOptions.html#details">More...</a><br /></td></tr>
 <tr class="memitem:SyncServer" id="r_SyncServer"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classipcourier_1_1SyncServer.html">SyncServer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A synchronous server for inter-process communication using Protocol Buffers over Unix Domain Sockets.  <a href="classipcourier_1_1SyncServer.html#details">More...</a><br /></td></tr>
+<tr class="memitem:SyncServerOptions" id="r_SyncServerOptions"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structipcourier_1_1SyncServerOptions.html">SyncServerOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure to hold various configuration options for the <a class="el" href="classipcourier_1_1SyncServer.html" title="A synchronous server for inter-process communication using Protocol Buffers over Unix Domain Sockets.">SyncServer</a>.  <a href="structipcourier_1_1SyncServerOptions.html#details">More...</a><br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-concepts" class="groupheader"><a id="concepts" name="concepts"></a>
 Concepts</h2></td></tr>
@@ -147,6 +149,12 @@ Enumerations</h2></td></tr>
 , <a class="el" href="#a8606c1db6c1243a07ed017baeb0c85fdab1f4097596ba8d92abf3dd9821209402">ServerReflection</a>
  }</td></tr>
 <tr class="memdesc:a8606c1db6c1243a07ed017baeb0c85fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines strategies for validating the consistency of request and response Protocol Buffer message pairs.  <a href="#a8606c1db6c1243a07ed017baeb0c85fd">More...</a><br /></td></tr>
+<tr class="memitem:af1bd3b0df74bafc8973362f4a324d8f8" id="r_af1bd3b0df74bafc8973362f4a324d8f8"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af1bd3b0df74bafc8973362f4a324d8f8">DuplicateRequestResponsePairRegistrationStrategy</a> { <a class="el" href="#af1bd3b0df74bafc8973362f4a324d8f8a1a5ff3c6160f61f31956a9e61964d74f">SilentOverride</a>
+, <a class="el" href="#af1bd3b0df74bafc8973362f4a324d8f8ab4760b156133f77abed725f0276e0308">SilentIgnore</a>
+, <a class="el" href="#af1bd3b0df74bafc8973362f4a324d8f8af88a80c6ae5c2bea5990a7cb4849248f">IndicateIgnore</a>
+, <a class="el" href="#af1bd3b0df74bafc8973362f4a324d8f8a8ce61dd2505effd96f937fa743b6491f">Throw</a>
+ }</td></tr>
+<tr class="memdesc:af1bd3b0df74bafc8973362f4a324d8f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines strategies for handling duplicate request/response handler registrations.  <a href="#af1bd3b0df74bafc8973362f4a324d8f8">More...</a><br /></td></tr>
 <tr class="memitem:a887d75cb647a50bc2e18847c2732c6e7" id="r_a887d75cb647a50bc2e18847c2732c6e7"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a887d75cb647a50bc2e18847c2732c6e7">SyncServerError</a> { <br />
 &#160;&#160;<a class="el" href="#a887d75cb647a50bc2e18847c2732c6e7abfaef30f1c8011c5cefa38ae470fb7aa">UnknownError</a>
 , <a class="el" href="#a887d75cb647a50bc2e18847c2732c6e7ab0622b12b7db3c300525b94a8977ff79">HandlerNotRegistered</a>
@@ -225,7 +233,7 @@ template&lt;typename SuccessType&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="SyncClient_8hpp_source.html#l00059">59</a> of file <a class="el" href="SyncClient_8hpp_source.html">SyncClient.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SyncClient_8hpp_source.html#l00060">60</a> of file <a class="el" href="SyncClient_8hpp_source.html">SyncClient.hpp</a>.</p>
 
 </div>
 </div>
@@ -252,11 +260,48 @@ template&lt;typename SuccessType&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="SyncServer_8hpp_source.html#l00060">60</a> of file <a class="el" href="SyncServer_8hpp_source.html">SyncServer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SyncServer_8hpp_source.html#l00062">62</a> of file <a class="el" href="SyncServer_8hpp_source.html">SyncServer.hpp</a>.</p>
 
 </div>
 </div>
 <a name="doc-enum-members" id="doc-enum-members"></a><h2 id="header-doc-enum-members" class="groupheader">Enumeration Type Documentation</h2>
+<a id="af1bd3b0df74bafc8973362f4a324d8f8" name="af1bd3b0df74bafc8973362f4a324d8f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1bd3b0df74bafc8973362f4a324d8f8">&#9670;&#160;</a></span>DuplicateRequestResponsePairRegistrationStrategy</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#af1bd3b0df74bafc8973362f4a324d8f8">ipcourier::DuplicateRequestResponsePairRegistrationStrategy</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel strong">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Defines strategies for handling duplicate request/response handler registrations. </p>
+<p>This enumeration determines how the <span class="tt"><a class="el" href="classipcourier_1_1SyncServer.html" title="A synchronous server for inter-process communication using Protocol Buffers over Unix Domain Sockets.">SyncServer</a></span> behaves when a handler is registered for a request type that already has an existing handler registered. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="structipcourier_1_1SyncServerOptions.html#a2b140e4fe002b590bcdf96bd217a4306" title="Strategy for handling duplicate request/response pair registrations.">SyncServerOptions::duplicate_registration_strategy</a> </dd></dl>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="af1bd3b0df74bafc8973362f4a324d8f8a1a5ff3c6160f61f31956a9e61964d74f" name="af1bd3b0df74bafc8973362f4a324d8f8a1a5ff3c6160f61f31956a9e61964d74f"></a>SilentOverride&#160;</td><td class="fielddoc"><p>New registration overrides the old one. Always return true. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="af1bd3b0df74bafc8973362f4a324d8f8ab4760b156133f77abed725f0276e0308" name="af1bd3b0df74bafc8973362f4a324d8f8ab4760b156133f77abed725f0276e0308"></a>SilentIgnore&#160;</td><td class="fielddoc"><p>New registration is ignored if a pair was already registered. Always return true. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="af1bd3b0df74bafc8973362f4a324d8f8af88a80c6ae5c2bea5990a7cb4849248f" name="af1bd3b0df74bafc8973362f4a324d8f8af88a80c6ae5c2bea5990a7cb4849248f"></a>IndicateIgnore&#160;</td><td class="fielddoc"><p>Same as SilentIgnore but return a boolean indicating success. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="af1bd3b0df74bafc8973362f4a324d8f8a8ce61dd2505effd96f937fa743b6491f" name="af1bd3b0df74bafc8973362f4a324d8f8a8ce61dd2505effd96f937fa743b6491f"></a>Throw&#160;</td><td class="fielddoc"><p>Throw std::invalid_argument if a pair was already registered, otherwise return true. </p>
+</td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="SyncCommons_8hpp_source.html#l00034">34</a> of file <a class="el" href="SyncCommons_8hpp_source.html">SyncCommons.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a0a05f974238733a0a1a4826800c7d3de" name="a0a05f974238733a0a1a4826800c7d3de"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0a05f974238733a0a1a4826800c7d3de">&#9670;&#160;</a></span>SyncClientError</h2>
 
@@ -295,7 +340,7 @@ template&lt;typename SuccessType&gt; </div>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="SyncClient_8hpp_source.html#l00040">40</a> of file <a class="el" href="SyncClient_8hpp_source.html">SyncClient.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SyncClient_8hpp_source.html#l00041">41</a> of file <a class="el" href="SyncClient_8hpp_source.html">SyncClient.hpp</a>.</p>
 
 </div>
 </div>
@@ -333,7 +378,7 @@ template&lt;typename SuccessType&gt; </div>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="SyncServer_8hpp_source.html#l00043">43</a> of file <a class="el" href="SyncServer_8hpp_source.html">SyncServer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SyncServer_8hpp_source.html#l00045">45</a> of file <a class="el" href="SyncServer_8hpp_source.html">SyncServer.hpp</a>.</p>
 
 </div>
 </div>
@@ -368,7 +413,7 @@ template&lt;typename SuccessType&gt; </div>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="SyncClient_8hpp_source.html#l00068">68</a> of file <a class="el" href="SyncClient_8hpp_source.html">SyncClient.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SyncClient_8hpp_source.html#l00069">69</a> of file <a class="el" href="SyncClient_8hpp_source.html">SyncClient.hpp</a>.</p>
 
 </div>
 </div>

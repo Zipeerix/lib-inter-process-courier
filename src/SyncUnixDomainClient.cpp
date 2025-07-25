@@ -18,8 +18,7 @@
 #include "SyncUnixDomainClient.hpp"
 
 namespace ipcourier::_detail {
-SyncUnixDomainClient::SyncUnixDomainClient(boost::asio::io_context& io_context) :
-    m_socket(io_context) {
+SyncUnixDomainClient::SyncUnixDomainClient(boost::asio::io_context& io_context) : m_socket(io_context) {
 }
 
 UnixDomainClientResult<void> SyncUnixDomainClient::connect(const std::string& addr) {

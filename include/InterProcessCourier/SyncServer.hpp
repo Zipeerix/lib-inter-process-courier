@@ -32,7 +32,9 @@
 #include <unordered_map>
 
 #include <InterProcessCourier/Error.hpp>
+#include <InterProcessCourier/SyncCommons.hpp>
 #include <InterProcessCourier/detail/DetailFwd.hpp>
+#include <InterProcessCourier/detail/DuplicateRegistrationHandler.hpp>
 #include <InterProcessCourier/detail/ProtobufTools.hpp>
 #include <InterProcessCourier/detail/ThirdPartyFwd.hpp>
 
@@ -60,6 +62,23 @@ template <typename SuccessType>
 using SyncServerResult = std::expected<SuccessType, Error<SyncServerError> >;
 
 /**
+ * @brief Structure to hold various configuration options for the SyncServer.
+ * @see SyncServer
+ */
+struct SyncServerOptions {
+    /**
+     * @brief Strategy for handling duplicate request/response pair registrations.
+     *
+     * This option determines what the registration functions returns when a handler is registered
+     * for a request type that already has a registered handler.
+     *
+     * @see DuplicateRequestResponsePairRegistrationStrategy
+     */
+    DuplicateRequestResponsePairRegistrationStrategy duplicate_registration_strategy =
+        DuplicateRequestResponsePairRegistrationStrategy::IndicateIgnore;
+};
+
+/**
  * @brief A synchronous server for inter-process communication using Protocol Buffers
  * over Unix Domain Sockets.
  *
@@ -84,10 +103,10 @@ public:
     /**
      * @brief Constructs a SyncServer instance.
      *
-     * @param io_context Boost::Asio io_context, note that this is a synchronous server, so no async operation will run
      * @param socket_addr The path to the Unix Domain Socket file to bind to and listen on.
+     * @param server_options Various settings relating to the server. @see SyncServerOptions
      */
-    SyncServer(boost::asio::io_context& io_context, const std::string& socket_addr);
+    SyncServer(std::string socket_addr, SyncServerOptions server_options);
 
     ~SyncServer();
 
@@ -97,26 +116,41 @@ public:
      * When a client sends a request of `RequestType`, the provided `handler` function
      * will be invoked with the deserialized request message. The return value of the
      * handler (a `ResponseType` message) will be serialized and sent back to the client.
-     * If a `RequestType` was previously registered to a different ` ResponseType `, then it will be overwritten.
      * Handlers should be registered before calling `start()` as the client might use reflection to discover
      * request/response pairs on connect.
+     *
+     * \warning What this function returns depends on the `SyncServerOptions::duplicate_registration_strategy` setting.
      *
      * @tparam RequestType The type of the Protocol Buffer request message this handler processes.
      * Must derive from `google::protobuf::Message`.
      * @tparam ResponseType The type of the Protocol Buffer response message this handler returns.
      * Must derive from `google::protobuf::Message`.
      * @param handler The function to be called when a `RequestType` message is received.
+     * @returns Boolean value, what it indicated depends on the `SyncServerOptions::duplicate_registration_strategy`
+     * setting.
      */
     template <IsDerivedFromProtoMessage RequestType, IsDerivedFromProtoMessage ResponseType>
-    void registerHandler(HandlerForSpecificType<RequestType, ResponseType> handler) {
-        const auto request_type_name = RequestType::descriptor()->full_name();
-        const auto response_type_name = ResponseType::descriptor()->full_name();
+    bool registerHandler(HandlerForSpecificType<RequestType, ResponseType> handler) {
+        const auto request_name = RequestType::descriptor()->full_name();
+        const auto response_name = ResponseType::descriptor()->full_name();
+        if (m_handlers.contains(request_name)) {
+            return registerDuplicateRequestResponsePair(request_name, response_name, handler);
+        }
 
-        m_handlers[request_type_name] = [handler = std::move(handler)](const BaseProtoType& msg) {
-            const auto response = handler(static_cast<const RequestType&>(msg));
-            return _detail::makePayloadFromProto(response);
+        registerValidatedRequestResponsePair<RequestType, ResponseType>(request_name, response_name, handler);
+        return true;
+    }
+
+    template <IsDerivedFromProtoMessage RequestType, IsDerivedFromProtoMessage ResponseType>
+    bool registerDuplicateRequestResponsePair(const std::string& request_name,
+                                              const std::string& response_name,
+                                              HandlerForSpecificType<RequestType, ResponseType> handler) {
+        const auto register_handler = [this, handler](const auto& handler_request_name,
+                                                      const auto& handler_response_name) {
+            this->registerValidatedRequestResponsePair(handler_request_name, handler_response_name, handler);
         };
-        m_request_response_pairs[request_type_name] = response_type_name;
+        return _detail::registerDuplicateRequestResponsePair(
+            m_server_options.duplicate_registration_strategy, register_handler, request_name, response_name);
     }
 
     /**
@@ -128,16 +162,31 @@ public:
      * @return SyncServerResult<void> A result indicating success or an error if the server
      * fails to start or encounters a critical runtime error.
      */
-    SyncServerResult<void> start();
+    SyncServerResult<void> start() const;
 
 private:
     using GenericHandler = std::function<std::string(const BaseProtoType&)>;
+
+    SyncServerOptions m_server_options;
+    std::string m_socket_addr;
+    std::unique_ptr<boost::asio::io_context> m_io_context;
 
     std::unordered_map<std::string, GenericHandler> m_handlers;
     std::unordered_map<std::string, std::string> m_request_response_pairs;
     std::unique_ptr<_detail::SyncUnixDomainServer> m_server;
 
     SyncServerResult<_detail::SerializedProtoPayload> acceptMessage(const _detail::SerializedProtoPayload& serialized);
+
+    template <IsDerivedFromProtoMessage RequestType, IsDerivedFromProtoMessage ResponseType>
+    void registerValidatedRequestResponsePair(const std::string& request_name,
+                                              const std::string& response_name,
+                                              HandlerForSpecificType<RequestType, ResponseType> handler) {
+        m_handlers[request_name] = [handler = std::move(handler)](const BaseProtoType& msg) {
+            const auto response = handler(static_cast<const RequestType&>(msg));
+            return _detail::makePayloadFromProto(response);
+        };
+        m_request_response_pairs[request_name] = response_name;
+    }
 };
 }  // namespace ipcourier
 

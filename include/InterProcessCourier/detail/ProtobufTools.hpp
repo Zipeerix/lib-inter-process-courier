@@ -24,8 +24,6 @@
 
 #include <InterProcessCourier/Error.hpp>
 #include <InterProcessCourier/ProtobufInterface.hpp>
-#include <google/protobuf/empty.pb.h>
-#include <google/protobuf/message.h>
 
 namespace ipcourier::_detail {
 using SerializedProtoPayload = std::string;

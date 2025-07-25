@@ -17,23 +17,26 @@
 
 #include "SyncUnixDomainClient.hpp"
 
+#include <format>
 #include <stdexcept>
 
 #include <InterProcessCourier/SyncClient.hpp>
+#include <InterProcessCourier/detail/DuplicateRegistrationHandler.hpp>
 #include <boost/asio.hpp>
 
 #include "InternalRequests.pb.h"
 
 namespace ipcourier {
-SyncClient::SyncClient(boost::asio::io_context& io_context, SyncClientOptions client_options) :
-    m_client_options(std::move(client_options)) {
-    m_client = std::make_unique<_detail::SyncUnixDomainClient>(io_context);
+SyncClient::SyncClient(std::string socket_addr, SyncClientOptions client_options) :
+    m_client_options(std::move(client_options)), m_socket_addr(std::move(socket_addr)),
+    m_io_context(std::make_unique<boost::asio::io_context>()),
+    m_client(std::make_unique<_detail::SyncUnixDomainClient>(*m_io_context)) {
 }
 
 SyncClient::~SyncClient() = default;
 
 SyncClientResult<void> SyncClient::connect() {
-    const auto connect_result = m_client->connect(m_client_options.socket_addr);
+    const auto connect_result = m_client->connect(m_socket_addr);
     if (!connect_result.has_value()) {
         return std::unexpected(Error(SyncClientError::UnableToConnectToServer, connect_result.error().message));
     }
@@ -66,6 +69,20 @@ SyncClientResult<void> SyncClient::reflectRequestResponseMappingPairs() {
     }
 
     return {};
+}
+
+bool SyncClient::registerDuplicateRequestResponsePair(const std::string& request_name,
+                                                      const std::string& response_name) {
+    const auto register_handler = [this](const auto& handler_request_name, const auto& handler_response_name) {
+        this->registerValidatedRequestResponsePair(handler_request_name, handler_response_name);
+    };
+    return _detail::registerDuplicateRequestResponsePair(
+        m_client_options.duplicate_registration_strategy, register_handler, request_name, response_name);
+}
+
+void SyncClient::registerValidatedRequestResponsePair(const std::string& request_name,
+                                                      const std::string& response_name) {
+    m_request_response_pairs[request_name] = response_name;
 }
 
 SyncClientResult<_detail::SerializedProtoPayload> SyncClient::sendAndReceiveMessage(

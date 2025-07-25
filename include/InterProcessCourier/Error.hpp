@@ -85,8 +85,7 @@ struct Error {
      * @param error_message An optional string providing more details about the error.
      */
     explicit Error(ErrorType error_type, std::string error_message = "") :
-        type(error_type),
-        message(std::move(error_message)) {
+        type(error_type), message(std::move(error_message)) {
     }
 };
 }  // namespace ipcourier

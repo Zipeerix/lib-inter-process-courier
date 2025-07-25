@@ -25,8 +25,7 @@ constexpr auto k_sync_server_loop_sleep_ms = std::chrono::milliseconds(100);
 
 SyncUnixDomainSession::SyncUnixDomainSession(boost::asio::local::stream_protocol::socket socket,
                                              RequestHandler request_handler) :
-    m_socket(std::move(socket)),
-    m_request_handler(std::move(request_handler)) {
+    m_socket(std::move(socket)), m_request_handler(std::move(request_handler)) {
 }
 
 UnixDomainServerResult<void> SyncUnixDomainSession::start() {
@@ -107,10 +106,8 @@ UnixDomainServerResult<void> SyncUnixDomainSession::writeResponse(const Protocol
 SyncUnixDomainServer::SyncUnixDomainServer(boost::asio::io_context& io_context,
                                            const std::string& socket_path,
                                            RequestHandler request_handler) :
-    m_io_context(io_context),
-    m_acceptor(io_context, boost::asio::local::stream_protocol::endpoint(socket_path)),
-    m_request_handler(std::move(request_handler)),
-    m_socket_path(socket_path) {
+    m_io_context(io_context), m_acceptor(io_context, boost::asio::local::stream_protocol::endpoint(socket_path)),
+    m_request_handler(std::move(request_handler)), m_socket_path(socket_path) {
 }
 
 UnixDomainServerResult<void> SyncUnixDomainServer::run() {

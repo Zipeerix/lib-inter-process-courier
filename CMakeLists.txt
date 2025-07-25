@@ -44,9 +44,12 @@ add_library(
     include/InterProcessCourier/ProtobufInterface.hpp
     include/InterProcessCourier/SyncServer.hpp
     include/InterProcessCourier/SyncClient.hpp
+    include/InterProcessCourier/SyncCommons.hpp
     include/InterProcessCourier/detail/ProtobufTools.hpp
-    include/InterProcessCourier/detail/ThirdPartyFwd.hpp
     include/InterProcessCourier/detail/DetailFwd.hpp
+    include/InterProcessCourier/detail/ThirdPartyFwd.hpp
+    include/InterProcessCourier/detail/DuplicateRegistrationHandler.hpp
+    src/DuplicateRegistrationHandler.cpp
     src/Version.cpp
     src/ProtobufTools.cpp
     src/SyncServer.cpp
