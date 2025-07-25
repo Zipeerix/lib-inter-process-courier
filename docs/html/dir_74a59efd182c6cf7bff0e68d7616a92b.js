@@ -1,6 +1,5 @@
 var dir_74a59efd182c6cf7bff0e68d7616a92b =
 [
-    [ "detail", "dir_e8c6fe111fb4859050675c7a9d6159e9.html", "dir_e8c6fe111fb4859050675c7a9d6159e9" ],
     [ "Error.hpp", "Error_8hpp.html", "Error_8hpp" ],
     [ "InterProcessCourier.hpp", "InterProcessCourier_8hpp.html", null ],
     [ "ProtobufInterface.hpp", "ProtobufInterface_8hpp.html", "ProtobufInterface_8hpp" ],

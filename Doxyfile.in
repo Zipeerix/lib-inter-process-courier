@@ -17,6 +17,8 @@ HTML_OUTPUT            = html
 
 # Input settings
 INPUT                  = include/InterProcessCourier
+EXCLUDE                = include/InterProcessCourier/detail
+EXCLUDE_SYMBOLS        = ipcourier::_detail
 FILE_PATTERNS          = *.h *.hpp
 EXCLUDE_PATTERNS       = *.cpp
 RECURSIVE              = YES
