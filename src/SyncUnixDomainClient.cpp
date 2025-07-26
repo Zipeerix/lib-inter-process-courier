@@ -24,7 +24,7 @@ SyncUnixDomainClient::SyncUnixDomainClient(boost::asio::io_context& io_context) 
 UnixDomainClientResult<void> SyncUnixDomainClient::connect(const std::string& addr) {
     try {
         m_socket.connect(boost::asio::local::stream_protocol::endpoint(addr));
-    } catch (std::exception& e) {
+    } catch (const std::exception& e) {
         return std::unexpected(Error(UnixDomainClientError::ConnectionFailed, e.what()));
     }
 

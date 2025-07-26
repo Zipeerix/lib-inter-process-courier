@@ -19,7 +19,7 @@
 
 namespace ipcourier {
 CommunicationProtocol getProtocol() {
-    const std::string protocol = INTER_PROCESS_COURIER_PROTOCOL;
+    const static auto protocol = std::string(INTER_PROCESS_COURIER_PROTOCOL);
     if (protocol == "protobuf") {
         return CommunicationProtocol::Protobuf;
     }

@@ -20,10 +20,11 @@
 #include <../include/InterProcessCourier/detail/DuplicateRegistrationHandler.hpp>
 
 namespace ipcourier::_detail {
-bool registerDuplicateRequestResponsePair(const DuplicateRequestResponsePairRegistrationStrategy strategy,
-                                          std::function<void(const std::string&, const std::string&)> register_function,
-                                          const std::string& request_name,
-                                          const std::string& response_name) {
+bool registerDuplicateRequestResponsePair(
+    const DuplicateRequestResponsePairRegistrationStrategy strategy,
+    const std::function<void(const std::string&, const std::string&)>& register_function,
+    const std::string& request_name,
+    const std::string& response_name) {
     switch (strategy) {
         case DuplicateRequestResponsePairRegistrationStrategy::SilentOverride:
             register_function(request_name, response_name);

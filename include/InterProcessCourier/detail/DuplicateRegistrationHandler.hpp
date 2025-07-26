@@ -24,10 +24,11 @@
 #include <InterProcessCourier/SyncCommons.hpp>
 
 namespace ipcourier::_detail {
-bool registerDuplicateRequestResponsePair(DuplicateRequestResponsePairRegistrationStrategy strategy,
-                                          std::function<void(const std::string&, const std::string&)> register_function,
-                                          const std::string& request_name,
-                                          const std::string& response_name);
+bool registerDuplicateRequestResponsePair(
+    DuplicateRequestResponsePairRegistrationStrategy strategy,
+    const std::function<void(const std::string&, const std::string&)>& register_function,
+    const std::string& request_name,
+    const std::string& response_name);
 }  // namespace ipcourier::_detail
 
 #endif  // INTER_PROCESS_COURIER_DUPLICATE_REGISTRATION_HANDLER_FWD_HPP
