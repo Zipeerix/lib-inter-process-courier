@@ -75,8 +75,7 @@ UnixDomainClientResult<ProtocolMessage> SyncUnixDomainClient::receiveMessage() {
         }
 
         return ProtocolMessage(reply_buffer.begin(), reply_buffer.end());
-        ;
-    } catch (std::exception& e) {
+    } catch (const std::exception& e) {
         return std::unexpected(Error(UnixDomainClientError::UnableToReceiveMessage, e.what()));
     }
 }
