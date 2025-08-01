@@ -129,6 +129,6 @@ class InterProcessCourier(ConanFile):
                 copy(self, pattern=f"lib{lib_name}.{extension}", dst=os.path.join(dst, "lib"), src=src)
 
     def package_info(self):
-        self.cpp_info.libs = collect_libs(self)
         self.cpp_info.includedirs = ["include"]
         self.cpp_info.libdirs = ["lib"]
+        self.cpp_info.libs = collect_libs(self)
